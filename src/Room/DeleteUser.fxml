@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Room.DeleteUserController">
+   <children>
+      <ImageView fitHeight="150.0" fitWidth="850.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Resources/logo.PNG" />
+         </image>
+      </ImageView>
+      <Button fx:id="btnReturn" layoutX="360.0" layoutY="543.0" mnemonicParsing="false" onAction="#goToLoggedInAD" text="Return to Logged In">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Label layoutX="305.0" layoutY="198.0" text="Select an account to delete">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnDeleteUser" layoutX="340.0" layoutY="488.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="185.0" text="Delete User">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Label fx:id="lblLogOut" layoutX="716.0" layoutY="74.0" onMouseEntered="#growText" onMouseExited="#shrinkText" onMousePressed="#goToLoggedOut" text="Log Out" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tblOfUsers" layoutX="167.0" layoutY="244.0" prefHeight="200.0" prefWidth="503.0">
+        <columns>
+          <TableColumn fx:id="UserName" prefWidth="129.0" text="Username" />
+          <TableColumn fx:id="FirstName" prefWidth="135.0" text="First Name" />
+            <TableColumn fx:id="LastName" prefWidth="137.0" text="Last Name" />
+            <TableColumn fx:id="UserLevel" prefWidth="101.0" text="Type of User" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

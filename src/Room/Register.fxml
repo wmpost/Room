@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Room.RegisterController">
+   <children>
+      <ImageView fitHeight="150.0" fitWidth="850.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Resources/logo.PNG" />
+         </image>
+      </ImageView>
+      <Label layoutX="96.0" layoutY="200.0" prefHeight="76.0" prefWidth="664.0" text="On this page you can register for a new account by typing into the fields below. Registered users can access exclusive features for UMW students, faculty and staff including searching for and reserving a room of your choice." textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="328.0" layoutY="170.0" prefHeight="25.0" prefWidth="181.0" text="Register for a New Account">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <VBox alignment="CENTER" layoutX="213.0" layoutY="317.0" prefHeight="171.0" prefWidth="364.0">
+         <children>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label alignment="CENTER" text="Username:" textAlignment="RIGHT">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="txtUserName" GridPane.columnIndex="1" />
+                  <Label text="First Name:" textAlignment="RIGHT" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="txtFName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="Last Name:" textAlignment="RIGHT" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="txtLName" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label text="Password:" textAlignment="RIGHT" GridPane.rowIndex="3">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <padding>
+                        <Insets right="11.0" />
+                     </padding>
+                  </Label>
+                  <Label text="Account Type:" textAlignment="RIGHT" GridPane.rowIndex="5">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding>
+                  </Label>
+                  <PasswordField fx:id="pwdPass1" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <PasswordField fx:id="pwdPass2" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <ChoiceBox fx:id="boxUserType" prefHeight="25.0" prefWidth="242.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                     <items>
+                        <FXCollections fx:factory="observableArrayList">
+                           <String fx:id="userStudentOption" fx:value="Student" />
+                           <String fx:id="userFacultyOption" fx:value="Faculty" />
+                           <String fx:id="userStaffOption" fx:value="Staff" />
+                           <String fx:id="userAdminOption" fx:value="Admin" />
+                        </FXCollections>
+                     </items>
+                   </ChoiceBox>
+                  <Label text="Confirm Password:" textAlignment="RIGHT" GridPane.rowIndex="4">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <padding>
+                        <Insets right="11.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </GridPane>
+         </children>
+      </VBox>
+      <Button fx:id="btnMain" layoutX="335.0" layoutY="555.0" mnemonicParsing="false" onAction="#goToMain" prefHeight="30.0" prefWidth="193.0" text="Return to Main Screen">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnRegister" layoutX="337.0" layoutY="516.0" mnemonicParsing="false" onAction="#registerButton" prefHeight="30.0" prefWidth="189.0" text="Register Your Account">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Label fx:id="lblUserId" layoutX="588.0" layoutY="325.0" prefHeight="17.0" prefWidth="201.0" />
+      <Label fx:id="lblPassword" layoutX="588.0" layoutY="439.0" prefHeight="17.0" prefWidth="201.0" />
+   </children>
+</AnchorPane>

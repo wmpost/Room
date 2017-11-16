@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Room.MainController">
+   <children>
+      <VBox layoutX="274.0" layoutY="320.0" prefHeight="122.0" prefWidth="275.0">
+         <children>
+            <Button fx:id="btnLogin" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showLogin" text="Login">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnRegister" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goToRegister" text="Register">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnCalendar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goToCalendar" text="View Calendar">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+      <ImageView fitHeight="150.0" fitWidth="850.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Resources/logo.PNG" />
+         </image>
+      </ImageView>
+      <Label layoutX="223.0" layoutY="185.0" prefHeight="20.0" prefWidth="415.0" text="Welcome to the UMW Room Reservation Scheduling System. " textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="75.0" layoutY="206.0" prefHeight="125.0" prefWidth="699.0" text="Guest and registered users can view the calendar of availability by clicking on the view calendar button below. All UMW students, faculty and staff can register for an account to use the search features to find an appropriate room to reserve. If you'd like to register for an account please click on the register button below. Users that are already registered can login by clicking the login button below to begin searching for a room to reserve. " textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="205.0" fitWidth="860.0" layoutX="-5.0" layoutY="448.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Resources/Campus-Center-1-e1440615409662.jpg" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
