@@ -88,6 +88,7 @@ public class LoggedInAdController implements Initializable, ControlledScreen {
 
     @FXML
     private void goToDeleteUsers(ActionEvent event){
+        mainClass.deleteUserController.fillTable(mainClass.user.getName());
         myController.setScreen(MainRoom.screen11ID);
     }
 

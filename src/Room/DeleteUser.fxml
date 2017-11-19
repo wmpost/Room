@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -21,12 +20,12 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Label layoutX="305.0" layoutY="198.0" text="Select an account to delete">
+      <Label layoutX="300.0" layoutY="198.0" prefHeight="27.0" prefWidth="232.0" text="Select Account(s) to delete">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="btnDeleteUser" layoutX="340.0" layoutY="488.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="185.0" text="Delete User">
+      <Button fx:id="btnDeleteUser" layoutX="340.0" layoutY="488.0" mnemonicParsing="false" onAction="#deleteUser" prefHeight="30.0" prefWidth="185.0" text="Delete User">
          <font>
             <Font size="14.0" />
          </font>
@@ -36,13 +35,9 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <TableView fx:id="tblOfUsers" layoutX="167.0" layoutY="244.0" prefHeight="200.0" prefWidth="503.0">
-        <columns>
-          <TableColumn fx:id="UserName" prefWidth="129.0" text="Username" />
-          <TableColumn fx:id="FirstName" prefWidth="135.0" text="First Name" />
-            <TableColumn fx:id="LastName" prefWidth="137.0" text="Last Name" />
-            <TableColumn fx:id="UserLevel" prefWidth="101.0" text="Type of User" />
-        </columns>
+      <TableView fx:id="TblofUsers" layoutX="167.0" layoutY="244.0" prefHeight="200.0" prefWidth="503.0">
+         <columns>
+         </columns>
       </TableView>
    </children>
 </AnchorPane>

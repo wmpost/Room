@@ -165,8 +165,7 @@ public class MainController implements Initializable, ControlledScreen {
             //   System.out.println("DB plain txt password equals input");
             System.out.println(mainClass.database.checkPassword("x", "x"));
             if (!mainClass.database.checkPassword(usernamePassword.getKey(), usernamePassword.getValue())){
-                System.out.print("Ugh");
-                mainClass.showAlert("ERROR", "ERROR!", "Your username or password is invalid.");
+                mainClass.showAlert("Error", "ERROR!", "Your username or password is invalid.");
             }
             else{
                 System.out.println("Valid User");
@@ -177,8 +176,6 @@ public class MainController implements Initializable, ControlledScreen {
                     System.out.println(mainClass.user.getPriv());
                     goToLogin(mainClass.user);
                 }
-                System.out.print(mainClass.user.getFname() + " ");
-                System.out.print(mainClass.user.getLname());
             }
         });
 

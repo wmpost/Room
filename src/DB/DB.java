@@ -2,6 +2,7 @@ package DB;
 import java.sql.*;
 
 import Room.Reservation;
+import Room.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.h2.Driver;
@@ -20,8 +21,12 @@ public class DB {
     private String checkUserNameString;
     private PreparedStatement getUser = null;
     private String getUserString;
-    private PreparedStatement getAllReservations;
+    private PreparedStatement getAllReservations = null;
     private String getAllReservationsString;
+    private String getAllUsersString;
+    private PreparedStatement getAllUsers = null;
+    private  String deleteUserString;
+    private  PreparedStatement deleteUsers;
 
     private PreparedStatement testSt = null;
     private PwdMgr pwdmgr;
@@ -32,6 +37,8 @@ public class DB {
         checkUserNameString = "SELECT USERNAME FROM USER WHERE USERNAME=?";
         getUserString = "SELECT USERNAME, FIRSTNAME, LASTNAME, USERLEVEL FROM USER WHERE USERNAME=?";
         getAllReservationsString = "SELECT RESERVATION.*, LOCATION.BUILDING, LOCATION.ROOM FROM RESERVATION JOIN LOCATION ON RESERVATION.LOCATION = LOCATION.ID WHERE RESERVATION.STARTDATE=? ORDER BY STARTDATE, STARTTIME, LOCATION ";
+        getAllUsersString ="SELECT * FROM USER WHERE USERNAME != ?";
+        deleteUserString = "DELETE FROM USER WHERE USERNAME IN (?)";
 
         pwdmgr = new PwdMgr();
 
@@ -45,6 +52,8 @@ public class DB {
             checkUserName = conn.prepareStatement(checkUserNameString);
             getUser = conn.prepareStatement(getUserString);
             getAllReservations = conn.prepareStatement(getAllReservationsString);
+            getAllUsers = conn.prepareStatement(getAllUsersString);
+            deleteUsers = conn.prepareStatement(deleteUserString);
 
 
 
@@ -115,6 +124,23 @@ public class DB {
         }
     }
 
+    public ObservableList<User> getUsersToDelete(String username) {
+        ArrayList<User> userList = new ArrayList<>();
+        try {
+            getAllUsers.setString(1, username);
+            rs = getAllUsers.executeQuery();
+            while (rs.next()) {
+                User u = new User(rs.getString("USERNAME"), rs.getString("FIRSTNAME"),
+                        rs.getString("LASTNAME"), rs.getString("USERLEVEL"));
+                userList.add(u);
+            }
+            ObservableList<User> UserObList = FXCollections.observableList(userList);
+            return UserObList;
+        } catch (SQLException e) {
+            System.err.println("Exception: " + e.getMessage());
+            return FXCollections.observableList(new ArrayList<User>());
+        }
+    }
     public ObservableList<Reservation> getAllReservations(String date){
         ArrayList<Reservation> reservations = new ArrayList<Reservation>();
         try{
@@ -132,6 +158,23 @@ public class DB {
         catch (SQLException e) {
             System.err.println("Exception: " + e.getMessage());
             return FXCollections.observableList(new ArrayList<Reservation>());
+        }
+    }
+
+    public int deleteUsers(ObservableList<User> users){
+        StringBuilder build = new StringBuilder();
+        for (int i = 0; i <users.size() ; i++) {
+            build.append(users.get(i).getName());
+            if(i != users.size()-1) build.append(", ");
+        }
+        try {
+            deleteUsers.setString(1, build.toString());
+            System.out.println(deleteUsers.toString());
+            return deleteUsers.executeUpdate();
+        }
+        catch (SQLException e) {
+            System.err.println("Exception: " + e.getMessage());
+            return 0;
         }
     }
 
