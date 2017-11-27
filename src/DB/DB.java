@@ -1,6 +1,6 @@
 package DB;
-import java.sql.*;
 
+import java.sql.*;
 import Room.Reservation;
 import Room.User;
 import javafx.collections.FXCollections;
@@ -8,6 +8,16 @@ import javafx.collections.ObservableList;
 import org.h2.Driver;
 import java.lang.StringBuilder;
 import java.util.ArrayList;
+
+/**
+ * @author Whitney
+ * The DB.java class purpose is to be the back end to the GUI, it stores all of the functions related to accessing,
+ * modifying, and removing data stored in the H2 database where all of the data on users, buildings,
+ * reservations and associated data is stored. The class has several private data members including a Connection
+ * for accessing the database called conn, a ResultSet called rs for executing the queries, several prepared
+ * statements associated with each method for running queries on the database and an instance of the password
+ * management class called pwdMgr for hashing passwords that users enter in the GUI frontend.
+ */
 
 public class DB {
 
@@ -37,8 +47,8 @@ public class DB {
         checkUserNameString = "SELECT USERNAME FROM USER WHERE USERNAME=?";
         getUserString = "SELECT USERNAME, FIRSTNAME, LASTNAME, USERLEVEL FROM USER WHERE USERNAME=?";
         getAllReservationsString = "SELECT RESERVATION.*, LOCATION.BUILDING, LOCATION.ROOM FROM RESERVATION JOIN LOCATION ON RESERVATION.LOCATION = LOCATION.ID WHERE RESERVATION.STARTDATE=? ORDER BY STARTDATE, STARTTIME, LOCATION ";
-        getAllUsersString ="SELECT * FROM USER WHERE USERNAME != ?";
-        deleteUserString = "DELETE FROM USER WHERE USERNAME IN (?)";
+        getAllUsersString ="SELECT USERNAME, FIRSTNAME, LASTNAME, USERLEVEL FROM USER WHERE USERNAME != ?";
+        deleteUserString = "DELETE FROM USER WHERE USERNAME =?";
 
         pwdmgr = new PwdMgr();
 
@@ -74,6 +84,14 @@ public class DB {
             return "WTF";
         }
     }
+
+    /**
+     * A method used to determine if the username the user submits in the GUI frontend is available
+     * within the database. Returns false if a user is found and prompts the user on the GUI that the name
+     * is not available.
+     * @param username the username the user types in on the register GUI screen
+     * @return boolean false is returned if the username is not available, otherwise it returns true
+     */
     public boolean isUserNameAvailable(String username){
         try {
             checkUserName.setString(1, username);
@@ -88,6 +106,19 @@ public class DB {
         }
 
     }
+
+    /**
+     * A method that takes in user input from the GUI front end registration screen and add this data
+     * into the database.
+     * @param username a String that the user has typed in for their username choice
+     * @param fname a String that the user has typed in for their first name
+     * @param lname a String that the user has typed in for their last name
+     * @param password a String that the user has typed in for their password choice
+     * @param userelevel a String that the user has selected what level of user they are, student, faculty/staff
+     *                   or admin
+     * @return boolean, if the user is succesfully added into the database the function returns true prompting
+     * the user on the GUI front end, otherwise it returns false and prompts the user on the GUI.
+     */
     public boolean addUser(String username, String fname, String lname, String password, String userelevel) {
         byte[][] pwdvals;
         try {
@@ -107,6 +138,15 @@ public class DB {
         }
     }
 
+    /**
+     * A method that checks to ensure that the password the user enters matches with the hashed password
+     * in the database.
+     * @param username a String of the username
+     * @param password a String of the password
+     * @return boolean, returns true if the password matches the stored hashed password in the database
+     * and allows the user to log into the system. Returns false if the password hash doesn't match and prompts
+     * the user on the GUI.
+     */
     public boolean checkPassword(String username, String password) {
         byte[] pwdhash, salthash;
         try {
@@ -124,6 +164,12 @@ public class DB {
         }
     }
 
+    /**
+     * A method to make an observable list of all the users eligible to delete from the database.
+     * This list is displayed in the GUI as a table view.
+     * @param username a String of the username
+     * @return UserObList an observable list of the users to delete from the database.
+     */
     public ObservableList<User> getUsersToDelete(String username) {
         ArrayList<User> userList = new ArrayList<>();
         try {
@@ -141,6 +187,13 @@ public class DB {
             return FXCollections.observableList(new ArrayList<User>());
         }
     }
+
+    /**
+     * A method to make an observable list of all the reservations for a particular selected date. This list
+     * is displayed in the GUI table view.
+     * @param date a String that represents the date the reservations should be displayed for.
+     * @return ObsResList an observable list of all the reservations for the specified date
+     */
     public ObservableList<Reservation> getAllReservations(String date){
         ArrayList<Reservation> reservations = new ArrayList<Reservation>();
         try{
@@ -161,16 +214,21 @@ public class DB {
         }
     }
 
+    /**
+     * A method to delete specific users as an administrator of the system.
+     * @param users an observable list of users that the administrator wants to delete from the system
+     * @return int usercount this int  ensures that the number of users to delete is updated if the query
+     * executes correctly.
+     */
     public int deleteUsers(ObservableList<User> users){
-        StringBuilder build = new StringBuilder();
-        for (int i = 0; i <users.size() ; i++) {
-            build.append(users.get(i).getName());
-            if(i != users.size()-1) build.append(", ");
-        }
         try {
-            deleteUsers.setString(1, build.toString());
+            int usercount = 0;
+            for (User u: users) {
+                deleteUsers.setString(1, u.getName());
+                usercount += deleteUsers.executeUpdate();
+            }
             System.out.println(deleteUsers.toString());
-            return deleteUsers.executeUpdate();
+            return usercount;
         }
         catch (SQLException e) {
             System.err.println("Exception: " + e.getMessage());
@@ -178,6 +236,11 @@ public class DB {
         }
     }
 
+    /**
+     * A method to return the specific user's data fields.
+     * @param username a String of the username
+     * @return A string array of the user's data fields, their username, first/last name and their user level.
+     */
     public String[] getUser(String username){
         String[] user = new String[4];
         try {

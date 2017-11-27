@@ -27,14 +27,14 @@ public class RegisterController implements Initializable, ControlledScreen {
     private Button btnMain;
     private MainRoom mainClass;
     @FXML private Button btnRegister;
-    @FXML private ChoiceBox boxUserType;
-    @FXML private TextField txtUserName;
-    @FXML private Label lblUserId;
-    @FXML private Label lblPassword;
-    @FXML private TextField txtFName;
-    @FXML private TextField txtLName;
-    @FXML private PasswordField pwdPass1;
-    @FXML private PasswordField pwdPass2;
+    @FXML protected ChoiceBox boxUserType;
+    @FXML protected TextField txtUserName;
+    @FXML protected Label lblUserId;
+    @FXML protected Label lblPassword;
+    @FXML protected TextField txtFName;
+    @FXML protected TextField txtLName;
+    @FXML protected PasswordField pwdPass1;
+    @FXML protected PasswordField pwdPass2;
 
     /**
      * Initializes the controller class.
@@ -59,6 +59,16 @@ public class RegisterController implements Initializable, ControlledScreen {
                 checkUserName(newVal));
         pwdPass2.focusedProperty().addListener((obs, oldVal, newVal) ->
                 checkPasswordMatch(newVal));
+    }
+    public void clearFields(){
+        boxUserType.getSelectionModel().selectFirst();
+        txtUserName.setText("");
+        lblUserId.setText("");
+        lblPassword.setText("");
+        txtFName.setText("");
+        txtLName.setText("");
+        pwdPass1.setText("");
+        pwdPass2.setText("");
     }
 //a method to check if the username the user types in is available
     private void checkUserName(Boolean f){
@@ -135,6 +145,7 @@ public class RegisterController implements Initializable, ControlledScreen {
      */
     @FXML
     private void goToMain(ActionEvent event){
+        clearFields();
         myController.setScreen(MainRoom.screen1ID);
     }
 

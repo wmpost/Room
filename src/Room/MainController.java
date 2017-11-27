@@ -71,7 +71,10 @@ public class MainController implements Initializable, ControlledScreen {
     }
 
     @FXML
-    private void goToRegister(ActionEvent event){myController.setScreen(MainRoom.screen3ID);}
+    private void goToRegister(ActionEvent event){
+        mainClass.registerController.clearFields();
+        myController.setScreen(MainRoom.screen3ID);
+    }
     /**
      * This method was used to make popup appear for logging into the system with a user id and password
      * The code was taken from the following source:

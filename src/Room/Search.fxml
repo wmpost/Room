@@ -80,7 +80,7 @@
                         <Insets right="11.0" />
                      </padding>
                   </Label>
-                  <Label text="Capaciity:" textAlignment="RIGHT" GridPane.rowIndex="4">
+                  <Label text="Capacity:" textAlignment="RIGHT" GridPane.rowIndex="4">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
