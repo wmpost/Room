@@ -80,7 +80,7 @@ public class MainController implements Initializable, ControlledScreen {
      * The code was taken from the following source:
      * http://code.makery.ch/blog/javafx-dialogs-official/
      * The method was modified to call the method needed to process information.
-     * @param event
+     * @param event the user clicks on the login button
      */
     @FXML
     private void showLogin(ActionEvent event){
@@ -183,6 +183,13 @@ public class MainController implements Initializable, ControlledScreen {
         });
 
     }
+
+    /**
+     * A method to log the user into the system when they type in their username and password.
+     * The method will take them to the appropriate screen based on their userlevel of student, faculty/staff
+     * or admin.
+     * @param u User 
+     */
     public void goToLogin(User u){
         switch(u.getPriv()){
             case("Student"):
