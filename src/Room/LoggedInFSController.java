@@ -71,7 +71,7 @@ public class LoggedInFSController implements Initializable, ControlledScreen {
     private void goToSearch(ActionEvent event){myController.setScreen(MainRoom.screen7ID);}
 
     @FXML private void goToReservations(ActionEvent event){
-        myController.setScreen(MainRoom.screen9ID);
+        myController.setScreen(MainRoom.screen10ID);
     }
 }
 

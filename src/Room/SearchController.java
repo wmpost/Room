@@ -19,13 +19,13 @@ import java.lang.*;
 /**
  *
  * @author Whitney
- *  This class is used to manage the GUI elements and logic when a user wants to register for
- *  a new account with the system.
+ *  This class is used to manage the GUI elements and logic when a user wants to search for a room to reserve
+ *  within the system. It has several private data members for the GUI elemenets inlcuding ChoiceBoxes for making
+ *  selections from, a button to search with and a logout Label. It also has an instance of MainRoom called mainClass
  */
 public class SearchController implements Initializable, ControlledScreen {
 
     @FXML
-    private Button btnMain;
     private MainRoom mainClass;
     @FXML private ChoiceBox boxBuilding;
     @FXML private ChoiceBox boxCapacity;
@@ -58,29 +58,36 @@ public class SearchController implements Initializable, ControlledScreen {
     public void setScreenParent(ScreensController screenParent){
         myController = screenParent;
     }
-    /**
-     * Returns to the main screen
-     * @param event when the button is clicked the main screen loads.
-     */
-    @FXML
-    private void goToMain(ActionEvent event){
-        myController.setScreen(MainRoom.screen1ID);
-    }
 
+    /**
+     * A method to log the user out of the system.
+     */
     private void logOut(){
         mainClass.user = null;
         lblLogout.setText(" ");
     }
+
+    /**
+     * A method to make the logout text label bigger when the user hovers over it.
+     * @param event the mouse moves over the logout label
+     */
     @FXML
     private void growText(MouseEvent event){
         lblLogout.setFont(Font.font("System", FontWeight.BOLD, 24));
     }
+    /**
+     * A method to make the logout text label back to regular size when the user moves the mouse away from the label
+     * @param event the mouse moves off from the logout label.
+     */
     @FXML
     private void shrinkText(MouseEvent event){
         lblLogout.setFont(Font.font("System" , FontWeight.BOLD, 18));
     }
 
-
+    /**
+     * A method to return to the main GUI screen and log the user out of the system.
+     * @param event a user clicks on the logout button
+     */
     @FXML
     private void goToLoggedOut(MouseEvent event){
         mainClass.user = null;

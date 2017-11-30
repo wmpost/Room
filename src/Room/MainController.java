@@ -188,7 +188,7 @@ public class MainController implements Initializable, ControlledScreen {
      * A method to log the user into the system when they type in their username and password.
      * The method will take them to the appropriate screen based on their userlevel of student, faculty/staff
      * or admin.
-     * @param u User 
+     * @param u User
      */
     public void goToLogin(User u){
         switch(u.getPriv()){

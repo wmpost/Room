@@ -14,12 +14,12 @@
             <Image url="@../Resources/logo.PNG" />
          </image>
       </ImageView>
-      <Button fx:id="btnSearch" layoutX="575.0" layoutY="500.0" mnemonicParsing="false" onAction="#goToSearch" text="Search to Reserve a Room">
+      <Button fx:id="btnSearch" layoutX="562.0" layoutY="500.0" mnemonicParsing="false" onAction="#goToSearch" prefHeight="30.0" prefWidth="218.0" text="Search to Reserve a Room">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="btnManage" layoutX="575.0" layoutY="540.0" mnemonicParsing="false" onAction="#goToManage" prefHeight="30.0" prefWidth="185.0" text="Manage Reservations">
+      <Button fx:id="btnManage" layoutX="564.0" layoutY="540.0" mnemonicParsing="false" onAction="#goToManage" prefHeight="30.0" prefWidth="218.0" text="View &amp; Manage Reservations">
          <font>
             <Font size="14.0" />
          </font>
@@ -29,7 +29,7 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="btnDeleteUsers" layoutX="575.0" layoutY="580.0" mnemonicParsing="false" onAction="#goToDeleteUsers" prefHeight="30.0" prefWidth="185.0" text="View/Delete Users">
+      <Button fx:id="btnDeleteUsers" layoutX="565.0" layoutY="580.0" mnemonicParsing="false" onAction="#goToDeleteUsers" prefHeight="30.0" prefWidth="218.0" text="View &amp; Delete Users">
          <font>
             <Font size="14.0" />
          </font>

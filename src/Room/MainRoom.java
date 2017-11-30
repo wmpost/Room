@@ -6,17 +6,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert.*;
-import java.io.*;
-import java.util.Scanner;
-import java.util.ArrayList;
+
 import java.lang.String;
-import javafx.stage.FileChooser;
+
 import DB.*;
 
 /**
  * @author Whitney
  * The main class of the program, this displays the GUI elements and moves the user of the system
  * from screen to screen based on their input.
+ * This class has many data members including
  */
 
 public class MainRoom extends Application {
@@ -38,12 +37,8 @@ public class MainRoom extends Application {
     public static String screen6File = "LoggedInFS.fxml";
     public static String screen7File = "Search.fxml";
     public static String screen7ID = "Search";
-    public static String screen8ID = "userManage";
-    public static String screen8File = "userManage.fxml";
-    public static String screen9File = "StaffManage.fxml";
-    public static String screen9ID = "StaffManage";
-    public static String screen10ID = "AdminManage";
-    public static String screen10File = "AdminManage.fxml";
+    public static String screen10ID = "Manage";
+    public static String screen10File = "Manage.fxml";
     public static String screen11File = "DeleteUser.fxml";
     public static String screen11ID = "DeleteUser";
 
@@ -55,9 +50,7 @@ public class MainRoom extends Application {
     protected RegisterController registerController;
     protected SearchController searchController;
     protected ViewCalendarController viewCalendarController;
-    protected UserManageController userManageController;
-    protected StaffManageController staffManageController;
-    protected AdminManageController adminManageController;
+    protected ManageController manageController;
     protected DeleteUserController deleteUserController;
 
     public User user;
@@ -97,8 +90,6 @@ public class MainRoom extends Application {
         mainContainer.loadScreen(MainRoom.screen5ID, MainRoom.screen5File);
         mainContainer.loadScreen(MainRoom.screen6ID, MainRoom.screen6File);
         mainContainer.loadScreen(MainRoom.screen7ID, MainRoom.screen7File);
-        mainContainer.loadScreen(MainRoom.screen8ID, MainRoom.screen8File);
-        mainContainer.loadScreen(MainRoom.screen9ID, MainRoom.screen9File);
         mainContainer.loadScreen(MainRoom.screen10ID, MainRoom.screen10File);
         mainContainer.loadScreen(MainRoom.screen11ID, MainRoom.screen11File);
 

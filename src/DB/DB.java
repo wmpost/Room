@@ -1,6 +1,8 @@
 package DB;
 
 import java.sql.*;
+
+import Room.LikedReservation;
 import Room.Reservation;
 import Room.User;
 import javafx.collections.FXCollections;
@@ -37,6 +39,10 @@ public class DB {
     private PreparedStatement getAllUsers = null;
     private  String deleteUserString;
     private  PreparedStatement deleteUsers;
+    private String getAllReservationsLikedString;
+    private PreparedStatement getAllReservationsLiked;
+    private String addLikesString;
+    private PreparedStatement addLikes;
 
     private PreparedStatement testSt = null;
     private PwdMgr pwdmgr;
@@ -49,7 +55,8 @@ public class DB {
         getAllReservationsString = "SELECT RESERVATION.*, LOCATION.BUILDING, LOCATION.ROOM FROM RESERVATION JOIN LOCATION ON RESERVATION.LOCATION = LOCATION.ID WHERE RESERVATION.STARTDATE=? ORDER BY STARTDATE, STARTTIME, LOCATION ";
         getAllUsersString ="SELECT USERNAME, FIRSTNAME, LASTNAME, USERLEVEL FROM USER WHERE USERNAME != ?";
         deleteUserString = "DELETE FROM USER WHERE USERNAME =?";
-
+        getAllReservationsLikedString = "SELECT RESERVATION.*, LOCATION.BUILDING, LOCATION.ROOM, USER.FIRSTNAME, USER.LASTNAME, (SELECT COUNT(*) FROM LIKES WHERE LIKES.RESERVATION = RESERVATION.ID) AS LIKECOUNT FROM RESERVATION JOIN LOCATION ON RESERVATION.LOCATION = LOCATION.ID JOIN USER ON RESERVATION.USER = USER.USERNAME WHERE RESERVATION.STARTDATE=? ORDER BY STARTDATE, STARTTIME, LOCATION";
+        addLikesString = "INSERT INTO LIKES (RESERVATION, USER) VALUES (?, ?)";
         pwdmgr = new PwdMgr();
 
         try {
@@ -64,6 +71,8 @@ public class DB {
             getAllReservations = conn.prepareStatement(getAllReservationsString);
             getAllUsers = conn.prepareStatement(getAllUsersString);
             deleteUsers = conn.prepareStatement(deleteUserString);
+            getAllReservationsLiked = conn.prepareStatement(getAllReservationsLikedString);
+            addLikes = conn.prepareStatement(addLikesString);
 
 
 
@@ -213,6 +222,34 @@ public class DB {
             return FXCollections.observableList(new ArrayList<Reservation>());
         }
     }
+    /**
+     * A method to make an observable list of all the reservations for a particular selected date. This list
+     * is displayed in the GUI table view. This list is used for registered users so they can delete and
+     * like reservations.
+     * @param date a String that represents the date the reservations should be displayed for.
+     * @return ObsResList an observable list of all the reservations for the specified date
+     */
+    public ObservableList<LikedReservation>getAllReservationsLiked(String date){
+        ArrayList<LikedReservation> reservations = new ArrayList<LikedReservation>();
+        try{
+            getAllReservationsLiked.setString(1, date);
+            rs = getAllReservationsLiked.executeQuery();
+            while(rs.next()){
+                String temp = (rs.getString("FIRSTNAME")+" " +rs.getString("LASTNAME"));
+                LikedReservation r = new LikedReservation(rs.getInt("ID"),rs.getString("BUILDING"),
+                        rs.getInt("ROOM"), rs.getString("USER"), rs.getDate("STARTDATE"),
+                        rs.getTime("STARTTIME"), rs.getTime("ENDTIME"), temp,
+                        rs.getInt("LIKECOUNT"));
+                reservations.add(r);
+            }
+            ObservableList<LikedReservation> ObsResList = FXCollections.observableList(reservations);
+            return ObsResList;
+        }
+        catch (SQLException e) {
+            System.err.println("Exception: " + e.getMessage());
+            return FXCollections.observableList(new ArrayList<LikedReservation>());
+        }
+    }
 
     /**
      * A method to delete specific users as an administrator of the system.
@@ -262,6 +299,23 @@ public class DB {
             System.err.println("Exception: " + e.getMessage());
             user[0] = "NULL";
             return user;
+        }
+    }
+
+    public int addLikes(String username, ObservableList<LikedReservation> list) {
+        try {
+            int likecount = 0;
+            for (LikedReservation l : list) {
+                addLikes.setInt(1, l.getId());
+                addLikes.setString(2, username);
+                System.out.println(addLikes.toString());
+                likecount += addLikes.executeUpdate();
+            }
+            return likecount;
+        }
+         catch (SQLException e) {
+            System.err.println(e.getErrorCode());
+            return 0;
         }
     }
 }

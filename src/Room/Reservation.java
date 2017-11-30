@@ -7,14 +7,24 @@ import java.util.Date;
 
 public class Reservation {
 
-    private int id;
-    private String building;
-    private int room;
-    private String user;
-    private String date;
-    private String startTime;
-    private String endTime;
-    private int likes;
+    protected int id;
+    protected String building;
+    protected int room;
+    protected String user;
+    protected String date;
+    protected String startTime;
+    protected String endTime;
+
+    public Reservation(){
+        id = 0;
+        building = null;
+        room = 0;
+        user = null;
+        date = null;
+        startTime = null;
+        endTime = null;
+    }
+
 
     public Reservation(int i,  String b, int r, String u, Date d, Time s, Time e){
         id = i;
@@ -26,12 +36,12 @@ public class Reservation {
         endTime = timeFormatter(e);
     }
 
-    private String dateFormatter(Date d){
+    protected String dateFormatter(Date d){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(d);
     }
 
-    private String timeFormatter(Time t){
+    protected String timeFormatter(Time t){
         SimpleDateFormat stf = new SimpleDateFormat("HH:mm");
         return stf.format(t);
     }
@@ -60,4 +70,6 @@ public class Reservation {
     public String getEndTime() {
         return endTime;
     }
+
+
 }

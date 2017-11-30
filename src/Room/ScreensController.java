@@ -106,14 +106,8 @@ public class ScreensController extends StackPane {
                 case("DeleteUser"):
                     mainClass.deleteUserController = myLoader.getController();
                     break;
-                case("userManage"):
-                    mainClass.userManageController = myLoader.getController();
-                    break;
-                case("StaffManage"):
-                    mainClass.staffManageController = myLoader.getController();
-                    break;
-                case("AdminManage"):
-                    mainClass.adminManageController = myLoader.getController();
+                case("Manage"):
+                    mainClass.manageController = myLoader.getController();
                     break;
             }
             ControlledScreen myScreenControler = ((ControlledScreen) myLoader.getController());

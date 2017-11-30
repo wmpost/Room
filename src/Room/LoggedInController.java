@@ -59,7 +59,7 @@ public class LoggedInController implements Initializable, ControlledScreen {
 
     @FXML
     private void goToReservations(ActionEvent event){
-        myController.setScreen(MainRoom.screen8ID);
+        myController.setScreen(MainRoom.screen10ID);
     }
 
     public void setName(String name){
