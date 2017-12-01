@@ -14,11 +14,12 @@ import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.scene.control.Tooltip.*;
 
 /**
  * @author Whitney
  * The ManageController.java class is used to manage and control all of the GUI front end for a user logged into
- * the system who is on the screen to view the reservatio calendar, like or delete reservations. The class has
+ * the system who is on the screen to view the reservation calendar, like or delete reservations. The class has
  * an instance of the main class, several FXML components including a date picker, labels, buttons, image view,
  * check box, and a table view. It also has an observable list of LikedReservations which are used to populate
  * the table view for the user to select from.

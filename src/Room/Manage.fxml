@@ -9,6 +9,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Tooltip?>
+<?language javascript?>
 
 <AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Room.ManageController">
    <children>
@@ -22,7 +24,7 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <TableView fx:id="tblRes" layoutX="27.0" layoutY="317.0" prefHeight="314.0" prefWidth="628.0">
+      <TableView fx:id="tblRes" layoutX="27.0" layoutY="317.0" prefHeight="314.0" prefWidth="487.0">
       </TableView>
       <Label layoutX="208.0" layoutY="146.0" prefHeight="58.0" prefWidth="430.0" text="UMW Room Reservation Calendar &amp; Reservation Management" wrapText="true">
          <font>
@@ -34,14 +36,27 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <ImageView fx:id="likebtn" fitHeight="83.0" fitWidth="169.0" layoutX="668.0" layoutY="514.0" onMousePressed="#LikeButton" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="likebtn" fitHeight="83.0" fitWidth="169.0" layoutX="611.0" layoutY="320.0" onMousePressed="#LikeButton" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Resources/88_facebook_like_button_big.jpeg" />
+            <fx:script>
+               var tooltip = new javafx.scene.control.Tooltip('Select the reservations you want to like from the table and click here!');
+               javafx.scene.control.Tooltip.install(likebtn, tooltip);
+            </fx:script>
          </image>
       </ImageView>
       <DatePicker fx:id="dpCal" layoutX="346.0" layoutY="280.0" onAction="#fillTable" prefHeight="25.0" prefWidth="184.0" />
-      <Button fx:id="btnDelRes" layoutX="663.0" layoutY="444.0" mnemonicParsing="false" onAction="#DeleteButtonAction" prefHeight="25.0" prefWidth="177.0" text="Delete Selected Reservations" />
-      <Button fx:id="btnReturn" layoutX="667.0" layoutY="602.0" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="173.0" text="Go Back" />
-      <CheckBox fx:id="cbDeletes" layoutX="672.0" layoutY="357.0" mnemonicParsing="false" onAction="#deleteRes" prefHeight="68.0" prefWidth="157.0" text=" Click to enable/disable the ability to delete reservations" textAlignment="CENTER" wrapText="true" />
+      <Button fx:id="btnDelRes" layoutX="589.0" layoutY="500.0" mnemonicParsing="false" onAction="#DeleteButtonAction" prefHeight="30.0" prefWidth="205.0" text="Delete Selected Reservations">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+      <Button fx:id="btnReturn" layoutX="588.0" layoutY="550.0" mnemonicParsing="false" onAction="#goBack" prefHeight="30.0" prefWidth="204.0" text="Go Back">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+      <CheckBox fx:id="cbDeletes" layoutX="581.0" layoutY="420.0" mnemonicParsing="false" onAction="#deleteRes" prefHeight="68.0" prefWidth="215.0" text=" Click to enable/disable the ability to delete reservations" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font size="14.0" />
+         </font></CheckBox>
    </children>
 </AnchorPane>
