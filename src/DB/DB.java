@@ -1,8 +1,8 @@
 package DB;
 
 import java.sql.*;
-
 import Room.LikedReservation;
+import Room.MainRoom;
 import Room.Reservation;
 import Room.User;
 import javafx.collections.FXCollections;
@@ -43,6 +43,10 @@ public class DB {
     private PreparedStatement getAllReservationsLiked;
     private String addLikesString;
     private PreparedStatement addLikes;
+    private String showDeletableString;
+    private PreparedStatement showDeletable;
+    private String deleteReservationString;
+    private PreparedStatement deleteReservation;
 
     private PreparedStatement testSt = null;
     private PwdMgr pwdmgr;
@@ -57,6 +61,8 @@ public class DB {
         deleteUserString = "DELETE FROM USER WHERE USERNAME =?";
         getAllReservationsLikedString = "SELECT RESERVATION.*, LOCATION.BUILDING, LOCATION.ROOM, USER.FIRSTNAME, USER.LASTNAME, (SELECT COUNT(*) FROM LIKES WHERE LIKES.RESERVATION = RESERVATION.ID) AS LIKECOUNT FROM RESERVATION JOIN LOCATION ON RESERVATION.LOCATION = LOCATION.ID JOIN USER ON RESERVATION.USER = USER.USERNAME WHERE RESERVATION.STARTDATE=? ORDER BY STARTDATE, STARTTIME, LOCATION";
         addLikesString = "INSERT INTO LIKES (RESERVATION, USER) VALUES (?, ?)";
+        showDeletableString = "SELECT RESERVATION.*, LOCATION.BUILDING, LOCATION.ROOM, USER.FIRSTNAME, USER.LASTNAME, (SELECT COUNT(*) FROM LIKES WHERE LIKES.RESERVATION = RESERVATION.ID) AS LIKECOUNT FROM RESERVATION JOIN LOCATION ON RESERVATION.LOCATION = LOCATION.ID JOIN USER ON RESERVATION.USER = USER.USERNAME WHERE RESERVATION.STARTDATE=? AND (USER.USERLEVEL = 'Student' OR USER.USERNAME = ?) ORDER BY STARTDATE, STARTTIME, LOCATION";
+        deleteReservationString = "DELETE FROM RESERVATION WHERE ID =?";
         pwdmgr = new PwdMgr();
 
         try {
@@ -73,6 +79,8 @@ public class DB {
             deleteUsers = conn.prepareStatement(deleteUserString);
             getAllReservationsLiked = conn.prepareStatement(getAllReservationsLikedString);
             addLikes = conn.prepareStatement(addLikesString);
+            showDeletable = conn.prepareStatement(showDeletableString);
+            deleteReservation = conn.prepareStatement(deleteReservationString);
 
 
 
@@ -264,8 +272,28 @@ public class DB {
                 deleteUsers.setString(1, u.getName());
                 usercount += deleteUsers.executeUpdate();
             }
-            System.out.println(deleteUsers.toString());
             return usercount;
+        }
+        catch (SQLException e) {
+            System.err.println("Exception: " + e.getMessage());
+            return 0;
+        }
+    }
+
+    /**
+     * A method to delete reservations from the h2 database
+     * @param res An observable list of reservations to delete
+     * @return the count of the reservations deleted
+     */
+    public int deleteReservation(ObservableList<LikedReservation> res){
+        try {
+            int count = 0;
+            for (LikedReservation r: res) {
+                deleteReservation.setInt(1, r.getId());
+                count += deleteReservation.executeUpdate();
+            }
+            System.out.println(deleteReservation.toString());
+            return count;
         }
         catch (SQLException e) {
             System.err.println("Exception: " + e.getMessage());
@@ -302,6 +330,14 @@ public class DB {
         }
     }
 
+    /**
+     * A method which updates the likes count for a reservation in the database. The method uses an observable
+     * list of reservations that the user selects from in the GUI display table.
+     * @param username String of the username associated with making the likes
+     * @param list an observable list of reservations that the user is liking
+     * @return likecount which is an int that is used to display to the user how many reservations that
+     * they liked.
+     */
     public int addLikes(String username, ObservableList<LikedReservation> list) {
         try {
             int likecount = 0;
@@ -316,6 +352,36 @@ public class DB {
          catch (SQLException e) {
             System.err.println(e.getErrorCode());
             return 0;
+        }
+    }
+
+    /**
+     * A method that creates the reservations list that a user can select from to delete from on the management
+     * GUI screen.
+     * @param date the date as a String for which the user has selected to delete reservations from
+     * @param user A string representing the user of the system
+     * @return the observable list of reservations the user can delete from.
+     */
+    public ObservableList<LikedReservation> deletableReservations(String date, String user){
+        ArrayList<LikedReservation> reservations = new ArrayList<LikedReservation>();
+        try{
+           showDeletable.setString(1, date);
+           showDeletable.setString(2, user);
+            rs = showDeletable.executeQuery();
+            while(rs.next()){
+                String temp = (rs.getString("FIRSTNAME")+" " +rs.getString("LASTNAME"));
+                LikedReservation r = new LikedReservation(rs.getInt("ID"),rs.getString("BUILDING"),
+                        rs.getInt("ROOM"), rs.getString("USER"), rs.getDate("STARTDATE"),
+                        rs.getTime("STARTTIME"), rs.getTime("ENDTIME"), temp,
+                        rs.getInt("LIKECOUNT"));
+                reservations.add(r);
+            }
+            ObservableList<LikedReservation> ObsResList = FXCollections.observableList(reservations);
+            return ObsResList;
+        }
+        catch (SQLException e) {
+            System.err.println("Exception: " + e.getMessage());
+            return FXCollections.observableList(new ArrayList<LikedReservation>());
         }
     }
 }

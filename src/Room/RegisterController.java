@@ -19,7 +19,8 @@ package Room;
  *
  * @author Whitney
  *  This class is used to manage the GUI elements and logic when a user wants to register for
- *  a new account with the system.
+ *  a new account with the system. The class contains several fxml elements including buttons, choice box,
+ *  text fields, password fields and labels. The class also contains an instance of the main class.
  */
 public class RegisterController implements Initializable, ControlledScreen {
 
@@ -70,7 +71,11 @@ public class RegisterController implements Initializable, ControlledScreen {
         pwdPass1.setText("");
         pwdPass2.setText("");
     }
-//a method to check if the username the user types in is available
+
+    /**
+     * A method that checks the database to ensure that the username the user types in is available.
+     * @param f a boolean that states true if the entered username is available or false if it is not.
+     */
     private void checkUserName(Boolean f){
         if (!f){
             if(txtUserName.getText().length() > 0){
@@ -89,7 +94,10 @@ public class RegisterController implements Initializable, ControlledScreen {
         }
     }
 
-    //a method to check if the passwords match
+    /**
+     * A method that checks to make sure that both passwords the user enters into the password fields match.
+     * @param f boolean that returns true if the passwords match, false otherwise.
+     */
     private void checkPasswordMatch(Boolean f) {
         if (!f) {
             if (!pwdPass1.getText().equals(pwdPass2.getText())) {
@@ -102,6 +110,10 @@ public class RegisterController implements Initializable, ControlledScreen {
         }
     }
 
+    /**
+     * A method that takes the data entered by the user and adds it to the database so that they are a registered
+     * user with the system.
+     */
     private void Register(){
         if(txtUserName.getText().length() == 0 || txtFName.getText().length() == 0 ||
                 txtLName.getText().length() == 0 || pwdPass1.getText().length() == 0 ||
@@ -129,6 +141,11 @@ public class RegisterController implements Initializable, ControlledScreen {
                     "input please try again.");
         }
     }
+
+    /**
+     * The method that calls the register method.
+     * @param event a mouse click on the register buttoon
+     */
     @FXML
     public void registerButton(ActionEvent event){
         Register();

@@ -16,10 +16,11 @@ import java.lang.*;
 /**
  *
  * @author Whitney
- *  This class is used to manage the GUI elements and logic when a user wants to view the
+ *  This class is used to manage the GUI elements and logic when a guest user wants to view the
  *  current reservation Calendar. The user can select the date they want to display the
  *  reservations for and the GUI will update to display the information from the
- *  database.
+ *  database. The class contains several fxml elements inclyding a date picker, buttons, and a table view.
+ *  It also has an instance of the main class.
  */
 public class ViewCalendarController implements Initializable, ControlledScreen {
 
@@ -63,12 +64,20 @@ public class ViewCalendarController implements Initializable, ControlledScreen {
         myController = screenParent;
     }
 
+    /**
+     * A method that returns to the main GUI screen
+     * @param event when the mouse clicks the return button
+     */
     @FXML
     private void goToMain(ActionEvent event){
         tblRes.getItems().clear();
         myController.setScreen(MainRoom.screen1ID);
     }
 
+    /**
+     * A method that fills the table with the reservations for the date that the user selects
+     * @param event when the user selects a date with the fxml date picker.
+     */
     @FXML void fillTable(ActionEvent event) {
         resList = mainClass.database.getAllReservations(dpCal.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         tblRes.setItems(resList);

@@ -94,11 +94,19 @@ public class SearchController implements Initializable, ControlledScreen {
         //lblName.setText(" ");
         myController.setScreen(MainRoom.screen1ID); }
 
+    /**
+     * A method to go back to the logged in screen based on their user level
+     * @param event a mouse click on the button to go back
+     */
         @FXML
     private void goToLogin(ActionEvent event) {
         findUserLevel(mainClass.user);
         }
 
+    /**
+     * A method to find out the user level of the user currently logged into the system
+     * @param u A String of the user
+     */
     private void findUserLevel(User u){
             mainClass.mainController.goToLogin(u);
                 }

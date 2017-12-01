@@ -15,7 +15,9 @@ import DB.*;
  * @author Whitney
  * The main class of the program, this displays the GUI elements and moves the user of the system
  * from screen to screen based on their input.
- * This class has many data members including
+ * This class has many data members including strings to represent each of the other fxml/controller pairs
+ * instances of these controllers, a User called user and a Stage called stage for all of the GUI elements
+ * to be displayed on.
  */
 
 public class MainRoom extends Application {
@@ -102,6 +104,12 @@ public class MainRoom extends Application {
         stage.show();
     }
 
+    /**
+     * A method which displays a popup alert
+     * @param type the type of alert to be displayed, either an Error or Info
+     * @param title String that is the title of the popup alert
+     * @param message String of the message contained in the popup alert
+     */
     public void showAlert (String type, String title, String message)
     {
         Alert alert;
@@ -122,6 +130,9 @@ public class MainRoom extends Application {
                 break;
         }
     }
+    /**
+     * The main method 
+     */
     public static void main (String[]args){
         launch(args);
     }

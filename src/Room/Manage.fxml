@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableView?>
@@ -33,13 +34,14 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <ImageView fx:id="likebtn" fitHeight="83.0" fitWidth="169.0" layoutX="668.0" layoutY="344.0" onMousePressed="#LikeButton" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="likebtn" fitHeight="83.0" fitWidth="169.0" layoutX="668.0" layoutY="514.0" onMousePressed="#LikeButton" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Resources/88_facebook_like_button_big.jpeg" />
          </image>
       </ImageView>
       <DatePicker fx:id="dpCal" layoutX="346.0" layoutY="280.0" onAction="#fillTable" prefHeight="25.0" prefWidth="184.0" />
-      <Button layoutX="670.0" layoutY="443.0" mnemonicParsing="false" text="Delete Selected Reservations" />
-      <Button fx:id="btnReturn" layoutX="669.0" layoutY="489.0" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="173.0" text="Go Back" />
+      <Button fx:id="btnDelRes" layoutX="663.0" layoutY="444.0" mnemonicParsing="false" onAction="#DeleteButtonAction" prefHeight="25.0" prefWidth="177.0" text="Delete Selected Reservations" />
+      <Button fx:id="btnReturn" layoutX="667.0" layoutY="602.0" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="173.0" text="Go Back" />
+      <CheckBox fx:id="cbDeletes" layoutX="672.0" layoutY="357.0" mnemonicParsing="false" onAction="#deleteRes" prefHeight="68.0" prefWidth="157.0" text=" Click to enable/disable the ability to delete reservations" textAlignment="CENTER" wrapText="true" />
    </children>
 </AnchorPane>
