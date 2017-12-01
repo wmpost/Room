@@ -32,6 +32,7 @@ public class SearchController implements Initializable, ControlledScreen {
     @FXML private ChoiceBox boxAV;
     @FXML private ChoiceBox boxSeating;
     @FXML private Label lblLogout;
+    @FXML private TableView tblRes;
 
     /**
      * Initializes the controller class.
@@ -44,12 +45,7 @@ public class SearchController implements Initializable, ControlledScreen {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         mainClass = MainRoom.getInstance();
-        ArrayList<String> Buildings = new ArrayList<>();
-        Buildings.add("Jepson Hall");
-        Buildings.add("Hurley Convergence Center (HCC)");
-        Buildings.add("Trinkle Hall");
-        Buildings.add("University Center");
-        boxBuilding.setItems(FXCollections.observableArrayList(Buildings));
+        
     }
 
     /**

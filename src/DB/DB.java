@@ -47,6 +47,8 @@ public class DB {
     private PreparedStatement showDeletable;
     private String deleteReservationString;
     private PreparedStatement deleteReservation;
+    private String deleteStudentResString;
+    private PreparedStatement deleteStudentRes;
 
     private PreparedStatement testSt = null;
     private PwdMgr pwdmgr;
@@ -63,6 +65,7 @@ public class DB {
         addLikesString = "INSERT INTO LIKES (RESERVATION, USER) VALUES (?, ?)";
         showDeletableString = "SELECT RESERVATION.*, LOCATION.BUILDING, LOCATION.ROOM, USER.FIRSTNAME, USER.LASTNAME, (SELECT COUNT(*) FROM LIKES WHERE LIKES.RESERVATION = RESERVATION.ID) AS LIKECOUNT FROM RESERVATION JOIN LOCATION ON RESERVATION.LOCATION = LOCATION.ID JOIN USER ON RESERVATION.USER = USER.USERNAME WHERE RESERVATION.STARTDATE=? AND (USER.USERLEVEL = 'Student' OR USER.USERNAME = ?) ORDER BY STARTDATE, STARTTIME, LOCATION";
         deleteReservationString = "DELETE FROM RESERVATION WHERE ID =?";
+        deleteStudentResString = "SELECT RESERVATION.*, LOCATION.BUILDING, LOCATION.ROOM, USER.FIRSTNAME, USER.LASTNAME, (SELECT COUNT(*) FROM LIKES WHERE LIKES.RESERVATION = RESERVATION.ID) AS LIKECOUNT FROM RESERVATION JOIN LOCATION ON RESERVATION.LOCATION = LOCATION.ID JOIN USER ON RESERVATION.USER = USER.USERNAME WHERE RESERVATION.STARTDATE=? AND USER.USERNAME = ? ORDER BY STARTDATE, STARTTIME, LOCATION";
         pwdmgr = new PwdMgr();
 
         try {
@@ -81,6 +84,7 @@ public class DB {
             addLikes = conn.prepareStatement(addLikesString);
             showDeletable = conn.prepareStatement(showDeletableString);
             deleteReservation = conn.prepareStatement(deleteReservationString);
+            deleteStudentRes = conn.prepareStatement(deleteStudentResString);
 
 
 
@@ -362,12 +366,19 @@ public class DB {
      * @param user A string representing the user of the system
      * @return the observable list of reservations the user can delete from.
      */
-    public ObservableList<LikedReservation> deletableReservations(String date, String user){
+    public ObservableList<LikedReservation> deletableReservations(String date, User user){
         ArrayList<LikedReservation> reservations = new ArrayList<LikedReservation>();
         try{
-           showDeletable.setString(1, date);
-           showDeletable.setString(2, user);
-            rs = showDeletable.executeQuery();
+            if(user.getPriv().equals("Faculty")) {
+                showDeletable.setString(1, date);
+                showDeletable.setString(2, user.getName());
+                rs = showDeletable.executeQuery();
+            }
+            else if(user.getPriv().equals("Student")){
+                deleteStudentRes.setString(1, date);
+                deleteStudentRes.setString(2, user.getName());
+                rs = deleteStudentRes.executeQuery();
+            }
             while(rs.next()){
                 String temp = (rs.getString("FIRSTNAME")+" " +rs.getString("LASTNAME"));
                 LikedReservation r = new LikedReservation(rs.getInt("ID"),rs.getString("BUILDING"),
