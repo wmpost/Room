@@ -14,17 +14,17 @@
             <Image url="@../Resources/logo.PNG" />
          </image>
       </ImageView>
-      <Label layoutX="49.0" layoutY="220.0" prefHeight="43.0" prefWidth="756.0" text="Please select from the following options by clicking on a button below to either search for an available room to make a reservation in or manage your current reservations." textAlignment="CENTER" wrapText="true">
+      <Label layoutX="49.0" layoutY="220.0" prefHeight="43.0" prefWidth="756.0" text="Please select from the following options by clicking on a button below to either search for an available room to make a reservation in or view the reservation calendar and manage your current reservations." textAlignment="CENTER" wrapText="true">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Button fx:id="btnSearch" layoutX="200.0" layoutY="275.0" mnemonicParsing="false" onAction="#goToSearch" text="Search to Reserve a Room">
+      <Button fx:id="btnSearch" layoutX="115.0" layoutY="291.0" mnemonicParsing="false" onAction="#goToSearch" text="Search to Reserve a Room">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="btnManage" layoutX="455.0" layoutY="275.0" mnemonicParsing="false" onAction="#goToReservations" text="View &amp; Manage Reservations">
+      <Button fx:id="btnManage" layoutX="506.0" layoutY="291.0" mnemonicParsing="false" onAction="#goToReservations" text="View &amp; Manage Reservations">
          <font>
             <Font size="14.0" />
          </font>

@@ -15,7 +15,7 @@
             <Image url="@../Resources/logo.PNG" />
          </image>
       </ImageView>
-      <Button fx:id="btnReturn" layoutX="360.0" layoutY="543.0" mnemonicParsing="false" onAction="#goToLoggedInAD" text="Return to Logged In">
+      <Button fx:id="btnReturn" layoutX="540.0" layoutY="516.0" mnemonicParsing="false" onAction="#goToLoggedInAD" prefHeight="30.0" prefWidth="185.0" text="Go Back">
          <font>
             <Font size="14.0" />
          </font>
@@ -25,7 +25,7 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="btnDeleteUser" layoutX="340.0" layoutY="488.0" mnemonicParsing="false" onAction="#deleteUser" prefHeight="30.0" prefWidth="185.0" text="Delete User">
+      <Button fx:id="btnDeleteUser" layoutX="541.0" layoutY="478.0" mnemonicParsing="false" onAction="#deleteUser" prefHeight="30.0" prefWidth="185.0" text="Delete User(s)">
          <font>
             <Font size="14.0" />
          </font>
@@ -35,9 +35,14 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <TableView fx:id="TblofUsers" layoutX="167.0" layoutY="244.0" prefHeight="200.0" prefWidth="503.0">
+      <TableView fx:id="TblofUsers" layoutX="87.0" layoutY="244.0" prefHeight="302.0" prefWidth="375.0">
          <columns>
          </columns>
       </TableView>
+      <ImageView fitHeight="218.0" fitWidth="330.0" layoutX="524.0" layoutY="244.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Resources/18891817_10155758198101660_5006684978461879151_o.jpg" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

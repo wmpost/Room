@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert.*;
 
@@ -100,6 +101,9 @@ public class MainRoom extends Application {
         Group root = new Group();
         root.getChildren().addAll(mainContainer);
         Scene scene = new Scene(root);
+        Image image = new Image("Resources/icon.jpg");
+        stage.setTitle("UMW Room Reservation Software");
+        stage.getIcons().add(image);
         stage.setScene(scene);
         stage.show();
     }

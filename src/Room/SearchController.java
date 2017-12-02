@@ -1,11 +1,13 @@
 package Room;
 
-import java.awt.*;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Observable;
 import java.util.ResourceBundle;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -94,32 +96,51 @@ public class SearchController implements Initializable, ControlledScreen {
             }
             timeList.add(s.toString());
         }
+        /**
+         * The following override method comes from the website below:
+         * https://stackoverflow.com/questions/14522680/javafx-choicebox-events
+         */
+        startTime.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                endTime.setItems(FXCollections.observableArrayList(
+                        populateEndTimes(startTime.getItems().get((Integer) newValue).toString())));
+            }
+        });
+
         startTime.setItems(FXCollections.observableArrayList(timeList));
-        startTime.getSelectionModel().selectFirst();
-        endTime.setItems(FXCollections.observableArrayList(populateEndTimes(startTime.getSelectionModel().getSelectedItem().toString())));
+        //endTime.setItems(FXCollections.observableArrayList(populateEndTimes(startTime.getSelectionModel().getSelectedItem().toString())));
 
         ArrayList<String> buildings = new ArrayList<>();
         buildings.add("Jepson");
         buildings.add("HCC");
         buildings.add("Trinkle");
         buildings.add("UC");
+        buildings.add("Any");
         boxBuilding.setItems((FXCollections.observableArrayList(buildings)));
+        boxBuilding.getSelectionModel().selectLast();
 
         ArrayList<String> seating = new ArrayList<>();
         seating.add("Desks");
-        seating.add("Chairs");
+        seating.add("Tables");
+        seating.add("Any");
         boxSeating.setItems(FXCollections.observableArrayList(seating));
+        boxSeating.getSelectionModel().selectLast();
 
         ArrayList<String> AV = new ArrayList<>();
         AV.add("Audiovisual Equipment");
         AV.add("No Audiovisual Equipment");
+        AV.add("Any");
         boxAV.setItems(FXCollections.observableArrayList(AV));
+        boxAV.getSelectionModel().selectLast();
 
         ArrayList<String> size = new ArrayList<>();
         size.add("10 people");
         size.add("50 people");
         size.add("100 people");
+        size.add("Any");
         boxCapacity.setItems(FXCollections.observableArrayList(size));
+        boxCapacity.getSelectionModel().selectLast();
 
         btnReserve.setDisable(true);
     }
@@ -166,6 +187,7 @@ public class SearchController implements Initializable, ControlledScreen {
         //lblName.setText(" ");
         myController.setScreen(MainRoom.screen1ID); }
 
+
     /**
      * A method to go back to the logged in screen based on their user level
      * @param event a mouse click on the button to go back
@@ -195,7 +217,6 @@ public class SearchController implements Initializable, ControlledScreen {
                 endTimes.add(timeList.get(i));
             }
             endTimes.add("07:00");
-            System.out.println(endTimes);
         }
         return endTimes;
     }
