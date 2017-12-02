@@ -20,10 +20,6 @@ public class DBTest {
         DB base = new DB();
         System.out.println(base.checkPassword("y", "y"));
     }
-    @Test
-    public void ugh(){
-        DB db = new DB();
-        db.test();
-    }
+
 
 }

@@ -1,14 +1,17 @@
 package DB;
 
 import java.sql.*;
-import Room.LikedReservation;
-import Room.MainRoom;
-import Room.Reservation;
-import Room.User;
+
+import Room.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.h2.Driver;
 import java.lang.StringBuilder;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 /**
@@ -49,8 +52,11 @@ public class DB {
     private PreparedStatement deleteReservation;
     private String deleteStudentResString;
     private PreparedStatement deleteStudentRes;
+    private Statement stmt;
+    private String availableRoomPart1, availableRoomPart2, availRoomDate, availRoomDate2, availRoomStart,
+            availRoomStart2, availRoomEnd, availRoomEnd2;
+    private boolean availAddAND;
 
-    private PreparedStatement testSt = null;
     private PwdMgr pwdmgr;
 
     public DB() {
@@ -66,6 +72,16 @@ public class DB {
         showDeletableString = "SELECT RESERVATION.*, LOCATION.BUILDING, LOCATION.ROOM, USER.FIRSTNAME, USER.LASTNAME, (SELECT COUNT(*) FROM LIKES WHERE LIKES.RESERVATION = RESERVATION.ID) AS LIKECOUNT FROM RESERVATION JOIN LOCATION ON RESERVATION.LOCATION = LOCATION.ID JOIN USER ON RESERVATION.USER = USER.USERNAME WHERE RESERVATION.STARTDATE=? AND (USER.USERLEVEL = 'Student' OR USER.USERNAME = ?) ORDER BY STARTDATE, STARTTIME, LOCATION";
         deleteReservationString = "DELETE FROM RESERVATION WHERE ID =?";
         deleteStudentResString = "SELECT RESERVATION.*, LOCATION.BUILDING, LOCATION.ROOM, USER.FIRSTNAME, USER.LASTNAME, (SELECT COUNT(*) FROM LIKES WHERE LIKES.RESERVATION = RESERVATION.ID) AS LIKECOUNT FROM RESERVATION JOIN LOCATION ON RESERVATION.LOCATION = LOCATION.ID JOIN USER ON RESERVATION.USER = USER.USERNAME WHERE RESERVATION.STARTDATE=? AND USER.USERNAME = ? ORDER BY STARTDATE, STARTTIME, LOCATION";
+        availableRoomPart1 = "SELECT * FROM LOCATION WHERE ";
+        availableRoomPart2 = "ID NOT IN (SELECT LOCATION FROM RESERVATION WHERE ";
+        availRoomDate = "STARTDATE = '";
+        availRoomDate2 = "' AND (STARTTIME >= '";
+        availRoomStart = "' AND STARTTIME < '";
+        availRoomStart2 = "') OR (ENDTIME > '";
+        availRoomEnd = "' AND ENDTIME <='";
+        availRoomEnd2 = "'))";
+        availAddAND = false;
+
         pwdmgr = new PwdMgr();
 
         try {
@@ -85,24 +101,74 @@ public class DB {
             showDeletable = conn.prepareStatement(showDeletableString);
             deleteReservation = conn.prepareStatement(deleteReservationString);
             deleteStudentRes = conn.prepareStatement(deleteStudentResString);
-
-
+            stmt = conn.createStatement();
 
         } catch (SQLException | ClassNotFoundException e) {
             System.err.println("Exception: " + e.getMessage());
         }
     }
 
-    public String test(){
+    public ObservableList<ResOptions> showReserveOptions(String user, String date, String building, String capacity, String av, String seating, String starttime, String endtime){
+        ArrayList<ResOptions> resOptions = new ArrayList<>();
+        StringBuilder availableRoom = new StringBuilder();
+
         try {
-            rs = testSt.executeQuery();
-            if (rs.next()) {
-                return rs.getString("PWD");
+            availableRoom.append(availableRoomPart1);
+            if(!building.equals("Any")) {
+                availableRoom.append("BUILDING = '"+building+"' ");
+                availAddAND = true;
             }
-            else return "WTF";
-        } catch (SQLException e) {
+            if(!capacity.equals("Any")){
+                if(availAddAND) availableRoom.append("AND ");
+                availableRoom.append("CAPACITY = "+capacity+" ");
+                availAddAND = true;
+            }
+            if(!av.equals("Any")){
+                if(availAddAND) availableRoom.append("AND ");
+                if(av.equals("Audiovisual Equipment")){
+                    availableRoom.append("AVGEAR = TRUE ");
+                }
+                else availableRoom.append("AVGEAR = FALSE ");
+                availAddAND = true;
+            }
+            if(!seating.equals("Any")){
+                if(availAddAND) availableRoom.append("AND ");
+                if(seating.equals("Desks")){
+                    availableRoom.append("DESK = TRUE ");
+                }
+                else availableRoom.append("DESK = FALSE ");
+                availAddAND = true;
+            }
+            if(availAddAND) availableRoom.append(" AND ");
+            availableRoom.append(availableRoomPart2);
+            availableRoom.append(availRoomDate);
+            availableRoom.append(date);
+            availableRoom.append(availRoomDate2);
+            availableRoom.append(starttime);
+            availableRoom.append(availRoomStart);
+            availableRoom.append(endtime);
+            availableRoom.append(availRoomStart2);
+            availableRoom.append(starttime);
+            availableRoom.append(availRoomEnd);
+            availableRoom.append(endtime);
+            availableRoom.append(availRoomEnd2);
+            String avlRoomSQL = availableRoom.toString();
+            System.out.println(avlRoomSQL);
+            availAddAND = false;
+
+            rs = stmt.executeQuery(avlRoomSQL);
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            while (rs.next()) {
+                ResOptions r = new ResOptions(rs.getInt("CAPACITY"), rs.getBoolean("AVGEAR"),
+                        rs.getBoolean("DESK"), 0, rs.getString("BUILDING"),
+                        rs.getInt("ROOM"), user, df.parse(date), Time.valueOf(starttime),
+                        Time.valueOf(endtime));
+                resOptions.add(r);
+            }
+            return FXCollections.observableArrayList(resOptions);
+        } catch (SQLException | ParseException e) {
             System.err.println("Exception: " + e.getMessage());
-            return "WTF";
+            return FXCollections.observableArrayList(resOptions);
         }
     }
 

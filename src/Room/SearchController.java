@@ -2,6 +2,7 @@ package Room;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.ResourceBundle;
@@ -16,10 +17,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+import javax.swing.*;
 import java.lang.*;
 
 /**
@@ -45,6 +48,15 @@ public class SearchController implements Initializable, ControlledScreen {
     @FXML private Button btnReserve;
     @FXML private Button btnSearch;
     @FXML private Button goBack;
+    private ObservableList<ResOptions> resOps;
+    private TableColumn timeStart = new TableColumn("Start Time");
+    private TableColumn timeEnd = new TableColumn("End Time");
+    private TableColumn building = new TableColumn("Building");
+    private TableColumn room = new TableColumn("Room");
+    private TableColumn capacity = new TableColumn("Capacity");
+    private TableColumn av = new TableColumn("Audiovisual Options");
+    private TableColumn seat = new TableColumn("Desks");
+    private TableColumn date = new TableColumn("Date");
 
 
     private ArrayList<String> timeList;
@@ -135,14 +147,16 @@ public class SearchController implements Initializable, ControlledScreen {
         boxAV.getSelectionModel().selectLast();
 
         ArrayList<String> size = new ArrayList<>();
-        size.add("10 people");
-        size.add("50 people");
-        size.add("100 people");
+        size.add("10");
+        size.add("50");
+        size.add("100");
         size.add("Any");
         boxCapacity.setItems(FXCollections.observableArrayList(size));
         boxCapacity.getSelectionModel().selectLast();
 
         btnReserve.setDisable(true);
+        tblRes.setEditable(false);
+        tblRes.getColumns().addAll(date, timeStart, timeEnd, building, room, capacity, seat, av);
     }
 
     /**
@@ -230,6 +244,12 @@ public class SearchController implements Initializable, ControlledScreen {
     private void goBack(ActionEvent event) {
         tblRes.getItems().clear();
         datePicker.getEditor().clear();
+        startTime.getSelectionModel().clearSelection();
+        endTime.getSelectionModel().clearSelection();
+        boxCapacity.getSelectionModel().selectLast();
+        boxAV.getSelectionModel().selectLast();
+        boxSeating.getSelectionModel().selectLast();
+        boxBuilding.getSelectionModel().selectLast();
         switch (mainClass.user.getPriv()) {
             case ("Student"):
                 myController.setScreen(MainRoom.screen4ID);
@@ -245,7 +265,55 @@ public class SearchController implements Initializable, ControlledScreen {
                 break;
         }
     }
-}
+    private String fixTime(String time){
+        String fixedTime;
+        switch(time){
+            case "01:00":
+                fixedTime = "13:00:00";
+                break;
+            case "02:00":
+                fixedTime = "14:00:00";
+                break;
+            case "03:00":
+                fixedTime = "15:00:00";
+                break;
+            case "04:00":
+                fixedTime = "16:00:00";
+                break;
+            case "05:00":
+                fixedTime = "17:00:00";
+                break;
+            case "06:00":
+                fixedTime = "18:00:00";
+                break;
+            case "07:00":
+                fixedTime = "19:00:00";
+                break;
+            default:
+                fixedTime = time + ":00";
+        }
+        return fixedTime;
+    }
+    @FXML public void searchForRooms(ActionEvent event) {
+        if (datePicker.getValue() == null || startTime.getSelectionModel().getSelectedIndex() < 0 || endTime.getSelectionModel().getSelectedIndex() < 0) {
+            String d = datePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            resOps = mainClass.database.showReserveOptions(mainClass.user.getName(), d, boxBuilding.getSelectionModel().getSelectedItem().toString(),
+                    boxCapacity.getSelectionModel().getSelectedItem().toString(), boxAV.getSelectionModel().getSelectedItem().toString(),
+                    boxSeating.getSelectionModel().getSelectedItem().toString(), fixTime(startTime.getSelectionModel().getSelectedItem().toString()),
+                    fixTime(endTime.getSelectionModel().getSelectedItem().toString()));
+            tblRes.setItems(resOps);
+            date.setCellValueFactory(new PropertyValueFactory<>("date"));
+            timeStart.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+            timeEnd.setCellValueFactory(new PropertyValueFactory<>("endTime"));
+            building.setCellValueFactory(new PropertyValueFactory<>("building"));
+            room.setCellValueFactory(new PropertyValueFactory<>("room"));
+            capacity.setCellValueFactory(new PropertyValueFactory<>("capacity"));
+            av.setCellValueFactory(new PropertyValueFactory<>("av"));
+            seat.setCellValueFactory(new PropertyValueFactory<>("seating"));
+        }
+    }
+
+    }
 
 
 
