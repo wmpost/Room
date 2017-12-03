@@ -44,6 +44,7 @@ public class MainRoom extends Application {
     public static String screen10File = "Manage.fxml";
     public static String screen11File = "DeleteUser.fxml";
     public static String screen11ID = "DeleteUser";
+    public Image image;
 
 
     protected LoggedInAdController loggedInAdController;
@@ -65,6 +66,7 @@ public class MainRoom extends Application {
      */
     public MainRoom() {
         instance = this;
+        image = new Image("Resources/icon.jpg");
     }
 
     /**
@@ -101,7 +103,6 @@ public class MainRoom extends Application {
         Group root = new Group();
         root.getChildren().addAll(mainContainer);
         Scene scene = new Scene(root);
-        Image image = new Image("Resources/icon.jpg");
         stage.setTitle("UMW Room Reservation Software");
         stage.getIcons().add(image);
         stage.setScene(scene);
@@ -116,17 +117,19 @@ public class MainRoom extends Application {
      */
     public void showAlert (String type, String title, String message)
     {
-        Alert alert;
+        Alert alert = new Alert(AlertType.INFORMATION);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(image);
         switch (type) {
             case "Info":
-                alert = new Alert(AlertType.INFORMATION);
+                alert.setAlertType(AlertType.INFORMATION);
                 alert.setTitle(title);
                 alert.setHeaderText(null);
                 alert.setContentText(message);
                 alert.showAndWait();
                 break;
             case "Error":
-                alert = new Alert(AlertType.ERROR);
+                alert.setAlertType(AlertType.ERROR);
                 alert.setTitle(title);
                 alert.setHeaderText(null);
                 alert.setContentText(message);
