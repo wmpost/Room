@@ -29,6 +29,7 @@ public class LoggedInFSController implements Initializable, ControlledScreen {
     @FXML private Button btnManageStudentRes;
     @FXML private Label lblLogOut;
     @FXML private Label lblName;
+    @FXML private Label lblLikes;
 
     /**
      * Initializes the controller class.
@@ -60,6 +61,13 @@ public class LoggedInFSController implements Initializable, ControlledScreen {
      * A method that logs the user out of the system and returns to the mainscreen.
      * @param event the label is clicked.
      */
+
+    /**
+     * A method that displays the number of reservations and likes the user has.
+     * @param r the number of reservations, an integer
+     * @param l the number of likes, an integer
+     */
+    public void setLikes(int r, int l){lblLikes.setText("You have " + r + " reservations with " + l + " likes.");}
     @FXML
     private void goToLoggedOut(MouseEvent event){
         mainClass.user = null;

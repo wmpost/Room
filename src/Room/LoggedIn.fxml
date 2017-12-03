@@ -14,7 +14,7 @@
             <Image url="@../Resources/logo.PNG" />
          </image>
       </ImageView>
-      <Label layoutX="49.0" layoutY="220.0" prefHeight="43.0" prefWidth="756.0" text="Please select from the following options by clicking on a button below to either search for an available room to make a reservation in or view the reservation calendar and manage your current reservations." textAlignment="CENTER" wrapText="true">
+      <Label layoutX="49.0" layoutY="240.0" prefHeight="43.0" prefWidth="756.0" text="Please select from the following options by clicking on a button below to either search for an available room to make a reservation in or view the reservation calendar and manage your current reservations." textAlignment="CENTER" wrapText="true">
          <font>
             <Font size="14.0" />
          </font>
@@ -29,7 +29,7 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Label fx:id="lblName" layoutX="325.0" layoutY="180.0" textAlignment="CENTER">
+      <Label fx:id="lblName" layoutX="325.0" layoutY="160.0" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
@@ -49,9 +49,14 @@
             <Image url="@../Resources/23331246_10155864113226660_2132042014537194521_o.jpg" />
          </image>
       </ImageView>
-      <Label layoutX="341.0" layoutY="180.0">
+      <Label layoutX="341.0" layoutY="190.0">
          <font>
             <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblLikes" layoutX="280.0" layoutY="210.0">
+         <font>
+            <Font name="System Bold" size="14.0" />
          </font>
       </Label>
    </children>

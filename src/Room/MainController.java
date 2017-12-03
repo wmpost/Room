@@ -141,26 +141,6 @@ public class MainController implements Initializable, ControlledScreen {
 
         //Optional<Pair<String, String>> result = dialog.showAndWait();
         makeUser(dialog.showAndWait());
-        /*result.ifPresent(usernamePassword -> {
-            if(mainClass.database.checkPassword(usernamePassword.getKey(), usernamePassword.getValue()) == false){
-                System.out.println("false");
-                mainClass.showAlert("ERROR", "ERROR!", "Your username or password is invalid.");
-                }
-            else{
-                String[] currentUser;
-                currentUser = mainClass.database.getUser(usernamePassword.getKey());
-                for(int i = 0; i<currentUser.length; i++){
-                    System.out.println(currentUser[i]);
-                }
-                if(currentUser[0] != "NULL") {
-                    mainClass.user = new User(currentUser[0],currentUser{1],currentUser[2], currentUser[3]);
-                }
-            }
-            //return;
-
-            //System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
-        });
-        */
     }
 
     /**
@@ -171,17 +151,17 @@ public class MainController implements Initializable, ControlledScreen {
         u.ifPresent(usernamePassword -> {
             //if (mainClass.database.test().equals(usernamePassword.getValue()))
             //   System.out.println("DB plain txt password equals input");
-            System.out.println(mainClass.database.checkPassword("x", "x"));
+            //System.out.println(mainClass.database.checkPassword("x", "x"));
             if (!mainClass.database.checkPassword(usernamePassword.getKey(), usernamePassword.getValue())){
                 mainClass.showAlert("Error", "ERROR!", "Your username or password is invalid.");
             }
             else{
-                System.out.println("Valid User");
+                //System.out.println("Valid User");
                 String[] currentUser;
                 currentUser = mainClass.database.getUser(usernamePassword.getKey());
                 if(currentUser[0] != "NULL") {
                     mainClass.user = new User(currentUser[0],currentUser[1],currentUser[2], currentUser[3]);
-                    System.out.println(mainClass.user.getPriv());
+                    //System.out.println(mainClass.user.getPriv());
                     goToLogin(mainClass.user);
                 }
             }
@@ -199,19 +179,26 @@ public class MainController implements Initializable, ControlledScreen {
         switch(u.getPriv()){
             case("Student"):
                 mainClass.loggedInController.setName(u.getFname());
+                Pair<Integer, Integer> p = mainClass.database.likeResCount(u.getName());
+                mainClass.loggedInController.setLikes(p.getKey(), p.getValue());
                 myController.setScreen(MainRoom.screen4ID);
                 break;
             case("Faculty"):
                 mainClass.loggedInFSController.setName(u.getFname());
+                Pair<Integer, Integer> q = mainClass.database.likeResCount(u.getName());
+                mainClass.loggedInFSController.setLikes(q.getKey(), q.getValue());;
                 myController.setScreen(MainRoom.screen6ID);
                 break;
             case("Staff"):
                 mainClass.loggedInFSController.setName(u.getFname());
+                Pair<Integer, Integer> r = mainClass.database.likeResCount(u.getName());
+                mainClass.loggedInFSController.setLikes(r.getKey(), r.getValue());
                 myController.setScreen(MainRoom.screen6ID);
                 break;
             case("Admin"):
-                System.out.println(u.getFname());
                 mainClass.loggedInAdController.setName(u.getFname());
+                Pair<Integer, Integer> s = mainClass.database.likeResCount(u.getName());
+                mainClass.loggedInAdController.setLikes(s.getKey(), s.getValue());
                 myController.setScreen(MainRoom.screen5ID);
                 break;
 

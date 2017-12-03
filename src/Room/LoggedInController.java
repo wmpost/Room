@@ -30,6 +30,7 @@ public class LoggedInController implements Initializable, ControlledScreen {
     @FXML
     public Label lblName;
     private MainRoom mainClass;
+    @FXML Label lblLikes;
 
     /**
      * Initializes the controller class.
@@ -75,6 +76,13 @@ public class LoggedInController implements Initializable, ControlledScreen {
     }
 
     /**
+     * A method that displays the number of reservations and likes the user has.
+     * @param r the number of reservations, an integer
+     * @param l the number of likes, an integer
+     */
+    public void setLikes(int r, int l){lblLikes.setText("You have " + r + " reservations with " + l + " likes.");}
+
+    /**
      * A method that logs the user out of the system and returns to the mainscreen.
      * @param event the label is clicked.
      */
@@ -99,7 +107,6 @@ public class LoggedInController implements Initializable, ControlledScreen {
     private void shrinkText(MouseEvent event){
         lblLogOut.setFont(Font.font("System" , FontWeight.BOLD, 18));
     }
-
 }
 
 

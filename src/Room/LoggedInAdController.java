@@ -40,6 +40,7 @@ public class LoggedInAdController implements Initializable, ControlledScreen {
     public Label lblName;
     @FXML
     private Label lblLogOut;
+    @FXML private Label lblLikes;
 
     /**
      * Initializes the controller class.
@@ -126,6 +127,13 @@ public class LoggedInAdController implements Initializable, ControlledScreen {
     private void goToManage(ActionEvent event){
         myController.setScreen(MainRoom.screen10ID);
     }
+
+    /**
+     * A method that displays the number of reservations and likes the user has.
+     * @param r the number of reservations, an integer
+     * @param l the number of likes, an integer
+     */
+    public void setLikes(int r, int l){lblLikes.setText("You have " + r + " reservations with " + l + " likes.");}
 
 
 }

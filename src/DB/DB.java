@@ -5,6 +5,7 @@ import java.sql.*;
 import Room.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.util.Pair;
 import org.h2.Driver;
 import java.lang.StringBuilder;
 import java.text.DateFormat;
@@ -58,6 +59,8 @@ public class DB {
     private boolean availAddAND;
     private String addReservationString;
     private PreparedStatement addReservation;
+    private String likeResCountString;
+    private PreparedStatement likeResCount;
 
     private PwdMgr pwdmgr;
 
@@ -84,7 +87,7 @@ public class DB {
         availRoomEnd2 = "'))";
         availAddAND = false;
         addReservationString = "INSERT INTO RESERVATION (STARTDATE, STARTTIME, ENDTIME, USER, LOCATION) VALUES (?,?,?,?,?)";
-
+        likeResCountString = "SELECT COUNT(*) AS RESCOUNT, SUM(SELECT COUNT(*) FROM LIKES WHERE LIKES.RESERVATION = RESERVATION.ID) AS LIKECOUNT FROM RESERVATION JOIN USER ON RESERVATION.USER = USER.USERNAME WHERE USER.USERNAME= ?";
         pwdmgr = new PwdMgr();
 
         try {
@@ -106,6 +109,7 @@ public class DB {
             deleteStudentRes = conn.prepareStatement(deleteStudentResString);
             stmt = conn.createStatement();
             addReservation = conn.prepareStatement(addReservationString);
+            likeResCount = conn.prepareStatement(likeResCountString);
 
         } catch (SQLException | ClassNotFoundException e) {
             System.err.println("Exception: " + e.getMessage());
@@ -466,6 +470,13 @@ public class DB {
         }
     }
 
+    /**
+     * A metjod that inserts the reservation a user selects in the GUI into the reservation table in
+     * the database.
+     * @param reservation an observable list of the selected reservation.
+     * @return the int update count of how many reservations put into the table (should always be
+     * 1 since there should only be one reservation made at a time.
+     */
     public int addReservation(ObservableList<ResOptions> reservation){
         try {
             addReservation.setString(1, reservation.get(0).getDate());
@@ -479,6 +490,12 @@ public class DB {
             return 0;
         }
     }
+
+    /**
+     * A method to fix the times so they are in 24 hour format when stored in the database.
+     * @param time the time as a string in 12 hour format
+     * @return the time as a string in 24 hour format.
+     */
     private String fixTime(String time){
         String fixedTime;
         switch(time){
@@ -507,6 +524,23 @@ public class DB {
                 fixedTime = time + ":00";
         }
         return fixedTime;
+    }
+
+    /**
+     *
+     **/
+    public Pair<Integer,Integer> likeResCount(String user){
+        try{
+            likeResCount.setString(1, user);
+            rs = likeResCount.executeQuery();
+            if(rs.next()) {
+                Pair<Integer, Integer> p = new Pair<Integer, Integer>(rs.getInt("RESCOUNT"), rs.getInt("LIKECOUNT"));
+                return p;
+            }
+            else return new Pair<Integer, Integer>(0,0);}
+        catch(SQLException e){
+            return new Pair<Integer, Integer>(0,0);
+        }
     }
 }
 

@@ -15,6 +15,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.scene.control.Tooltip.*;
+import javafx.stage.Stage;
+import javafx.util.Pair;
 
 /**
  * @author Whitney
@@ -67,6 +69,7 @@ public class ManageController implements Initializable, ControlledScreen {
         tblRes.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tblRes.getColumns().addAll(name, timeStart, timeEnd, building, room, likes);
         btnDelRes.setDisable(true);
+        cbDeletes.setDisable(true);
     }
 
     /**
@@ -80,6 +83,7 @@ public class ManageController implements Initializable, ControlledScreen {
      * A method that repopulates the table view with the most up to date database information.
      */
     private void refreshTable() {
+        cbDeletes.setDisable(false);
         cbDeletes.setSelected(false);
         resList = mainClass.database.getAllReservationsLiked(dpCal.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         tblRes.setItems(resList);
@@ -137,6 +141,11 @@ public class ManageController implements Initializable, ControlledScreen {
      */
     @FXML
     private void goToLoggedOut(MouseEvent event) {
+        tblRes.getItems().clear();
+        dpCal.getEditor().clear();
+        dpCal.setValue(null);
+        cbDeletes.setSelected(false);
+        btnDelRes.setDisable(true);
         mainClass.user = null;
         //lblName.setText(" ");
         myController.setScreen(MainRoom.screen1ID);
@@ -150,17 +159,28 @@ public class ManageController implements Initializable, ControlledScreen {
     private void goBack(ActionEvent event) {
         tblRes.getItems().clear();
         dpCal.getEditor().clear();
+        dpCal.setValue(null);
+        cbDeletes.setSelected(false);
+        btnDelRes.setDisable(true);
         switch (mainClass.user.getPriv()) {
             case ("Student"):
+                Pair<Integer, Integer> p = mainClass.database.likeResCount(mainClass.user.getName());
+                mainClass.loggedInController.setLikes(p.getKey(), p.getValue());
                 myController.setScreen(MainRoom.screen4ID);
                 break;
             case ("Faculty"):
+                Pair<Integer, Integer> q = mainClass.database.likeResCount(mainClass.user.getName());
+                mainClass.loggedInFSController.setLikes(q.getKey(), q.getValue());;
                 myController.setScreen(MainRoom.screen6ID);
                 break;
             case ("Staff"):
                 myController.setScreen(MainRoom.screen6ID);
+                Pair<Integer, Integer> r = mainClass.database.likeResCount(mainClass.user.getName());
+                mainClass.loggedInFSController.setLikes(r.getKey(), r.getValue());
                 break;
             case ("Admin"):
+                Pair<Integer, Integer> s = mainClass.database.likeResCount(mainClass.user.getName());
+                mainClass.loggedInAdController.setLikes(s.getKey(), s.getValue());
                 myController.setScreen(MainRoom.screen5ID);
                 break;
         }
@@ -172,7 +192,6 @@ public class ManageController implements Initializable, ControlledScreen {
      */
     @FXML private void deleteRes(ActionEvent event) {
         if (cbDeletes.isSelected()) {
-
             if (dpCal.getValue() != null) {
                 if (mainClass.user.getPriv().equals("Admin")) {
                     btnDelRes.setDisable(false);
@@ -186,39 +205,43 @@ public class ManageController implements Initializable, ControlledScreen {
                     name.setCellValueFactory(new PropertyValueFactory<>("fullName"));
                     likes.setCellValueFactory(new PropertyValueFactory<>("likes"));
                     btnDelRes.setDisable(false);
-                }
-                else {
+                } else {
                     cbDeletes.setSelected(false);
                     mainClass.showAlert("Error", "Error", "Please select a date first, then click on the check box to enable the ability to delete reservations.");
                 }
 
-            } else {
+            }
+        } else {
+            refreshTable();
+            btnDelRes.setDisable(true);
+        }
+    }
+
+    /**
+     * This method carries out the deletion of reservations from the database when the button is pressed.
+     * @param event The mouse click on the delete button.
+     */
+    @FXML private void DeleteButtonAction (ActionEvent event){
+        ObservableList<LikedReservation> deleteRes = tblRes.getSelectionModel().getSelectedItems();
+        if (!deleteRes.isEmpty()) {
+            //code for this alert box comes from http://code.makery.ch/blog/javafx-dialogs-official/
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(mainClass.image);
+            alert.setTitle("Confirm Deletion of Reservations");
+            alert.setHeaderText(null);
+            alert.setContentText("Are you sure you want to delete these reservations from the system?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                System.out.println(mainClass.database.deleteReservation(tblRes.getSelectionModel().getSelectedItems()));
+                cbDeletes.setSelected(false);
                 refreshTable();
-                btnDelRes.setDisable(true);
+            } else {
+                tblRes.getSelectionModel().clearSelection();
             }
         }
     }
-
-        @FXML private void DeleteButtonAction (ActionEvent event){
-            ObservableList<LikedReservation> deleteRes = tblRes.getSelectionModel().getSelectedItems();
-            if (!deleteRes.isEmpty()) {
-                //code for this alert box comes from http://code.makery.ch/blog/javafx-dialogs-official/
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Confirm Deletion of Reservations");
-                alert.setHeaderText(null);
-                alert.setContentText("Are you sure you want to delete these reservations from the system?");
-
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK) {
-                    System.out.println(mainClass.database.deleteReservation(tblRes.getSelectionModel().getSelectedItems()));
-                    cbDeletes.setSelected(false);
-                    refreshTable();
-                }
-                else {
-                    tblRes.getSelectionModel().clearSelection();
-                }
-            }
-        }
-    }
+}
 
 

@@ -24,7 +24,7 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Label fx:id="lblName" layoutX="500.0" layoutY="200.0" textAlignment="CENTER">
+      <Label fx:id="lblName" layoutX="500.0" layoutY="170.0" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
@@ -42,6 +42,11 @@
       <Label layoutX="503.0" layoutY="260.0" prefHeight="193.0" prefWidth="330.0" text="Please select from the following options by clicking on a button below. You can search for an available room to make a reservation in. Or you can manage your current reservations, along with student reservations." textAlignment="CENTER" wrapText="true">
          <font>
             <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblLikes" layoutX="503.0" layoutY="218.0" prefHeight="51.0" prefWidth="330.0" wrapText="true">
+         <font>
+            <Font name="System Bold" size="14.0" />
          </font>
       </Label>
    </children>

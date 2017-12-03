@@ -21,6 +21,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.util.Pair;
 
 import javax.swing.*;
 import java.lang.*;
@@ -202,6 +203,15 @@ public class SearchController implements Initializable, ControlledScreen {
      */
     @FXML
     private void goToLoggedOut(MouseEvent event){
+        tblRes.getItems().clear();
+        datePicker.getEditor().clear();
+        datePicker.setValue(null);
+        startTime.getSelectionModel().selectFirst();
+        endTime.getSelectionModel().selectFirst();
+        boxBuilding.getSelectionModel().selectLast();
+        boxSeating.getSelectionModel().selectLast();
+        boxAV.getSelectionModel().selectLast();
+        boxCapacity.getSelectionModel().selectLast();
         mainClass.user = null;
         //lblName.setText(" ");
         myController.setScreen(MainRoom.screen1ID); }
@@ -258,15 +268,23 @@ public class SearchController implements Initializable, ControlledScreen {
         boxBuilding.getSelectionModel().selectLast();
         switch (mainClass.user.getPriv()) {
             case ("Student"):
+                Pair<Integer, Integer> p = mainClass.database.likeResCount(mainClass.user.getName());
+                mainClass.loggedInController.setLikes(p.getKey(), p.getValue());
                 myController.setScreen(MainRoom.screen4ID);
                 break;
             case ("Faculty"):
+                Pair<Integer, Integer> q = mainClass.database.likeResCount(mainClass.user.getName());
+                mainClass.loggedInFSController.setLikes(q.getKey(), q.getValue());;
                 myController.setScreen(MainRoom.screen6ID);
                 break;
             case ("Staff"):
+                Pair<Integer, Integer> r = mainClass.database.likeResCount(mainClass.user.getName());
+                mainClass.loggedInFSController.setLikes(r.getKey(), r.getValue());
                 myController.setScreen(MainRoom.screen6ID);
                 break;
             case ("Admin"):
+                Pair<Integer, Integer> s = mainClass.database.likeResCount(mainClass.user.getName());
+                mainClass.loggedInAdController.setLikes(s.getKey(), s.getValue());
                 myController.setScreen(MainRoom.screen5ID);
                 break;
         }
@@ -320,6 +338,10 @@ public class SearchController implements Initializable, ControlledScreen {
         else mainClass.showAlert("Error", "Error", "Please make sure to at minimum select a date, start and end time in order to search for a room!");
     }
 
+    /**
+     * A method that returns the user's reservation and like count
+     * @param event
+     */
     @FXML public void reserveRoom(ActionEvent event){
         int reservations = mainClass.database.addReservation(tblRes.getSelectionModel().getSelectedItems());
         mainClass.showAlert("Info", "Reservations", "You have reserved "+reservations+" room");
