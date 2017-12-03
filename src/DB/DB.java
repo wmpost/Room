@@ -56,6 +56,8 @@ public class DB {
     private String availableRoomPart1, availableRoomPart2, availRoomDate, availRoomDate2, availRoomStart,
             availRoomStart2, availRoomEnd, availRoomEnd2;
     private boolean availAddAND;
+    private String addReservationString;
+    private PreparedStatement addReservation;
 
     private PwdMgr pwdmgr;
 
@@ -81,6 +83,7 @@ public class DB {
         availRoomEnd = "' AND ENDTIME <='";
         availRoomEnd2 = "'))";
         availAddAND = false;
+        addReservationString = "INSERT INTO RESERVATION (STARTDATE, STARTTIME, ENDTIME, USER, LOCATION) VALUES (?,?,?,?,?)";
 
         pwdmgr = new PwdMgr();
 
@@ -102,6 +105,7 @@ public class DB {
             deleteReservation = conn.prepareStatement(deleteReservationString);
             deleteStudentRes = conn.prepareStatement(deleteStudentResString);
             stmt = conn.createStatement();
+            addReservation = conn.prepareStatement(addReservationString);
 
         } catch (SQLException | ClassNotFoundException e) {
             System.err.println("Exception: " + e.getMessage());
@@ -162,7 +166,7 @@ public class DB {
                 ResOptions r = new ResOptions(rs.getInt("CAPACITY"), rs.getBoolean("AVGEAR"),
                         rs.getBoolean("DESK"), 0, rs.getString("BUILDING"),
                         rs.getInt("ROOM"), user, df.parse(date), Time.valueOf(starttime),
-                        Time.valueOf(endtime));
+                        Time.valueOf(endtime), rs.getInt("ID"));
                 resOptions.add(r);
             }
             return FXCollections.observableArrayList(resOptions);
@@ -460,6 +464,49 @@ public class DB {
             System.err.println("Exception: " + e.getMessage());
             return FXCollections.observableList(new ArrayList<LikedReservation>());
         }
+    }
+
+    public int addReservation(ObservableList<ResOptions> reservation){
+        try {
+            addReservation.setString(1, reservation.get(0).getDate());
+            addReservation.setString(2,fixTime(reservation.get(0).getStartTime()));
+            addReservation.setString(3,fixTime(reservation.get(0).getEndTime()));
+            addReservation.setString(4,reservation.get(0).getUser());
+            addReservation.setInt(5,reservation.get(0).getLocId());
+            return addReservation.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Exception: " + e.getMessage());
+            return 0;
+        }
+    }
+    private String fixTime(String time){
+        String fixedTime;
+        switch(time){
+            case "01:00":
+                fixedTime = "13:00:00";
+                break;
+            case "02:00":
+                fixedTime = "14:00:00";
+                break;
+            case "03:00":
+                fixedTime = "15:00:00";
+                break;
+            case "04:00":
+                fixedTime = "16:00:00";
+                break;
+            case "05:00":
+                fixedTime = "17:00:00";
+                break;
+            case "06:00":
+                fixedTime = "18:00:00";
+                break;
+            case "07:00":
+                fixedTime = "19:00:00";
+                break;
+            default:
+                fixedTime = time + ":00";
+        }
+        return fixedTime;
     }
 }
 

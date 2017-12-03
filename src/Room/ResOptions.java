@@ -14,8 +14,9 @@ public class ResOptions extends Reservation {
     private int capacity;
     private boolean av;
     private boolean seating;
+    private int locId;
 
-    public ResOptions(int c, boolean a, boolean se, int i, String b, int r, String u, Date d, Time s, Time e){
+    public ResOptions(int c, boolean a, boolean se, int i, String b, int r, String u, Date d, Time s, Time e, int l){
         capacity = c;
         av = a;
         seating = se;
@@ -26,6 +27,7 @@ public class ResOptions extends Reservation {
         date = dateFormatter(d);
         startTime = timeFormatter(s);
         endTime = timeFormatter(e);
+        locId = l;
     }
 
     public int getCapacity() {
@@ -38,5 +40,9 @@ public class ResOptions extends Reservation {
 
     public boolean getSeating() {
         return seating;
+    }
+
+    public int getLocId() {
+        return locId;
     }
 }

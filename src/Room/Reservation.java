@@ -69,7 +69,7 @@ public class Reservation {
      * @return the String of the formatted time
      */
     protected String timeFormatter(Time t){
-        SimpleDateFormat stf = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat stf = new SimpleDateFormat("hh:mm");
         return stf.format(t);
     }
 
@@ -121,5 +121,7 @@ public class Reservation {
         return endTime;
     }
 
-
+    public String getUser(){
+        return user;
+    }
 }

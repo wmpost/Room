@@ -146,7 +146,7 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="btnReserve" layoutX="385.0" layoutY="601.0" mnemonicParsing="false" text="Reserve Room">
+      <Button fx:id="btnReserve" layoutX="385.0" layoutY="601.0" mnemonicParsing="false" onAction="#reserveRoom" text="Reserve Room">
          <font>
             <Font size="14.0" />
          </font>

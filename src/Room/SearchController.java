@@ -87,6 +87,11 @@ public class SearchController implements Initializable, ControlledScreen {
             }
         });
         datePicker.setEditable(false);
+        tblRes.getSelectionModel().selectedItemProperty().addListener((obs, os, ns) -> {
+            if(ns != null){
+                btnReserve.setDisable(false);
+            }
+        });
         timeList = new ArrayList<>();
         StringBuilder s;
 
@@ -244,8 +249,9 @@ public class SearchController implements Initializable, ControlledScreen {
     private void goBack(ActionEvent event) {
         tblRes.getItems().clear();
         datePicker.getEditor().clear();
-        startTime.getSelectionModel().clearSelection();
-        endTime.getSelectionModel().clearSelection();
+        datePicker.setValue(null);
+        startTime.getSelectionModel().select(0);
+        endTime.getSelectionModel().select(0);
         boxCapacity.getSelectionModel().selectLast();
         boxAV.getSelectionModel().selectLast();
         boxSeating.getSelectionModel().selectLast();
@@ -295,7 +301,7 @@ public class SearchController implements Initializable, ControlledScreen {
         return fixedTime;
     }
     @FXML public void searchForRooms(ActionEvent event) {
-        if (datePicker.getValue() == null || startTime.getSelectionModel().getSelectedIndex() < 0 || endTime.getSelectionModel().getSelectedIndex() < 0) {
+        if (datePicker.getValue() != null && startTime.getSelectionModel().getSelectedIndex() >-1 && endTime.getSelectionModel().getSelectedIndex() >-1){
             String d = datePicker.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             resOps = mainClass.database.showReserveOptions(mainClass.user.getName(), d, boxBuilding.getSelectionModel().getSelectedItem().toString(),
                     boxCapacity.getSelectionModel().getSelectedItem().toString(), boxAV.getSelectionModel().getSelectedItem().toString(),
@@ -311,6 +317,12 @@ public class SearchController implements Initializable, ControlledScreen {
             av.setCellValueFactory(new PropertyValueFactory<>("av"));
             seat.setCellValueFactory(new PropertyValueFactory<>("seating"));
         }
+        else mainClass.showAlert("Error", "Error", "Please make sure to at minimum select a date, start and end time in order to search for a room!");
+    }
+
+    @FXML public void reserveRoom(ActionEvent event){
+        int reservations = mainClass.database.addReservation(tblRes.getSelectionModel().getSelectedItems());
+        mainClass.showAlert("Info", "Reservations", "You have reserved "+reservations+" room");
     }
 
     }
