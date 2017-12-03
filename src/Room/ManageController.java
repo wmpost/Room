@@ -11,6 +11,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.image.ImageView;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -143,7 +144,7 @@ public class ManageController implements Initializable, ControlledScreen {
     private void goToLoggedOut(MouseEvent event) {
         tblRes.getItems().clear();
         dpCal.getEditor().clear();
-        dpCal.setValue(null);
+        dpCal.setValue(LocalDate.now());
         cbDeletes.setSelected(false);
         btnDelRes.setDisable(true);
         mainClass.user = null;
@@ -159,7 +160,7 @@ public class ManageController implements Initializable, ControlledScreen {
     private void goBack(ActionEvent event) {
         tblRes.getItems().clear();
         dpCal.getEditor().clear();
-        dpCal.setValue(null);
+        dpCal.setValue(LocalDate.now());
         cbDeletes.setSelected(false);
         btnDelRes.setDisable(true);
         switch (mainClass.user.getPriv()) {
