@@ -84,16 +84,18 @@ public class ManageController implements Initializable, ControlledScreen {
      * A method that repopulates the table view with the most up to date database information.
      */
     private void refreshTable() {
-        cbDeletes.setDisable(false);
-        cbDeletes.setSelected(false);
-        resList = mainClass.database.getAllReservationsLiked(dpCal.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        tblRes.setItems(resList);
-        timeStart.setCellValueFactory(new PropertyValueFactory<>("startTime"));
-        timeEnd.setCellValueFactory(new PropertyValueFactory<>("endTime"));
-        building.setCellValueFactory(new PropertyValueFactory<>("building"));
-        room.setCellValueFactory(new PropertyValueFactory<>("room"));
-        name.setCellValueFactory(new PropertyValueFactory<>("fullName"));
-        likes.setCellValueFactory(new PropertyValueFactory<>("likes"));
+        if(dpCal.getValue() != null) {
+            cbDeletes.setDisable(false);
+            cbDeletes.setSelected(false);
+            resList = mainClass.database.getAllReservationsLiked(dpCal.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            tblRes.setItems(resList);
+            timeStart.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+            timeEnd.setCellValueFactory(new PropertyValueFactory<>("endTime"));
+            building.setCellValueFactory(new PropertyValueFactory<>("building"));
+            room.setCellValueFactory(new PropertyValueFactory<>("room"));
+            name.setCellValueFactory(new PropertyValueFactory<>("fullName"));
+            likes.setCellValueFactory(new PropertyValueFactory<>("likes"));
+        }
     }
 
     /**
@@ -144,8 +146,9 @@ public class ManageController implements Initializable, ControlledScreen {
     private void goToLoggedOut(MouseEvent event) {
         tblRes.getItems().clear();
         dpCal.getEditor().clear();
-        dpCal.setValue(LocalDate.now());
+        dpCal.setValue(null);
         cbDeletes.setSelected(false);
+        cbDeletes.setDisable(true);
         btnDelRes.setDisable(true);
         mainClass.user = null;
         //lblName.setText(" ");
@@ -160,8 +163,9 @@ public class ManageController implements Initializable, ControlledScreen {
     private void goBack(ActionEvent event) {
         tblRes.getItems().clear();
         dpCal.getEditor().clear();
-        dpCal.setValue(LocalDate.now());
+        dpCal.setValue(null);
         cbDeletes.setSelected(false);
+        cbDeletes.setDisable(true);
         btnDelRes.setDisable(true);
         switch (mainClass.user.getPriv()) {
             case ("Student"):
