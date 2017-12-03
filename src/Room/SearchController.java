@@ -323,6 +323,8 @@ public class SearchController implements Initializable, ControlledScreen {
     @FXML public void reserveRoom(ActionEvent event){
         int reservations = mainClass.database.addReservation(tblRes.getSelectionModel().getSelectedItems());
         mainClass.showAlert("Info", "Reservations", "You have reserved "+reservations+" room");
+        btnReserve.setDisable(true);
+        searchForRooms(new ActionEvent());
     }
 
     }
