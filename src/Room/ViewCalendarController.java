@@ -71,7 +71,7 @@ public class ViewCalendarController implements Initializable, ControlledScreen {
     @FXML
     private void goToMain(ActionEvent event){
         dpCal.getEditor().clear();
-        dpCal.setValue(null);
+        //dpCal.setValue(null);
         tblRes.getItems().clear();
         myController.setScreen(MainRoom.screen1ID);
     }
